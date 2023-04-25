@@ -29,7 +29,7 @@ final class RouteSchemaTest extends TestCase
 {
     public function testSchema(): void
     {
-        $route = route('/path/{name}/user/{id}');
+        $route = route('/{name}/user/{id}');
         $getEndpoint = new Endpoint(
             new GetMethod(),
             bind(new GetController())
