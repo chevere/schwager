@@ -23,8 +23,6 @@
 
 Documentation is available at [chevere.org](https://chevere.org/).
 
-.
-
 ## License
 
 Copyright 2023 [Rodolfo Berrios A.](https://rodolfoberrios.com/)
