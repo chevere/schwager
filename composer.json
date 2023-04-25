@@ -1,6 +1,6 @@
 {
-    "name": "chevere/router-spec",
-    "description": "A chevere router-spec package",
+    "name": "chevere/schwager",
+    "description": "API spec generator for chevere/router",
     "homepage": "https://chevere.org",
     "type": "library",
     "license": "Apache-2.0",
