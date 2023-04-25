@@ -1,0 +1,60 @@
+{
+    "name": "chevere/%repoName%",
+    "description": "A chevere %repoName% package",
+    "homepage": "https://chevere.org",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Rodolfo Berrios",
+            "email": "rodolfo@chevere.org",
+            "homepage": "https://chevere.org"
+        }
+    ],
+    "require": {
+        "chevere/chevere": "^2.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.9",
+        "phpunit/phpunit": "^9.5",
+        "symplify/easy-coding-standard": "^11.1"
+    },
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ],
+        "psr-4": {
+            "Chevere\\%namespace%\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chevere\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "all": [
+            "composer phpstan",
+            "composer test",
+            "composer test-rep",
+            "composer infection"
+        ],
+        "infection": "infection --only-covered -j10",
+        "phpstan": "vendor/bin/phpstan analyze src/ --memory-limit 512M --level 9",
+        "test": "vendor/bin/phpunit -c phpunit.xml",
+        "test-coverage": "vendor/bin/phpunit -c phpunit-coverage.xml",
+        "update-cs": "mkdir -p .ecs && cd .ecs && curl -O https://raw.githubusercontent.com/chevere/code-style/main/.ecs/ecs-chevere.php"
+    },
+    "scripts-descriptions": {
+        "all": "Runs all checks",
+        "infection": "Runs infection",
+        "phpstan": "Runs phpstan",
+        "test": "Run test suite",
+        "test-coverage": "Run test suite (coverage)",
+        "update-cs": "Update Chevere code style definition"
+    }
+}
