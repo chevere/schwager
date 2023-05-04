@@ -32,13 +32,13 @@ final class RouteSchemaTest extends TestCase
         $route = route('/{name}/user/{id}');
         $getEndpoint = new Endpoint(
             new GetMethod(),
-            bind(new GetController())
+            bind(GetController::class)
         );
         $putEndpoint = new Endpoint(
             new PutMethod(),
-            bind(new PutController())
+            bind(PutController::class)
         );
-        $parameters = $getEndpoint->bind()->controller()->parameters();
+        $parameters = $getEndpoint->bind()->controllerName()::getParameters();
         $route = $route
             ->withEndpoint($getEndpoint)
             ->withEndpoint($putEndpoint);

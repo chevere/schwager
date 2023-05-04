@@ -65,7 +65,7 @@ final class RouteSchema implements ToArrayInterface
     {
         $array = [];
         foreach ($route->path()->wildcards() as $name => $wildcard) {
-            $parameters = $this->firstEndpoint->bind()->controller()->parameters();
+            $parameters = $this->firstEndpoint->bind()->controllerName()::getParameters();
             $description = $parameters->get($name)->description();
             $schema = new WildcardSchema($wildcard, $description);
             $array[$name] = $schema->toArray();

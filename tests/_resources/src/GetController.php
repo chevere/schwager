@@ -27,7 +27,7 @@ use function Chevere\Parameter\time;
 
 class GetController extends HttpController
 {
-    public function acceptQuery(): ArrayStringParameterInterface
+    public static function acceptQuery(): ArrayStringParameterInterface
     {
         return arrayString(
             date: date(),
@@ -36,7 +36,7 @@ class GetController extends HttpController
         );
     }
 
-    public function acceptBody(): ArrayTypeParameterInterface
+    public static function acceptBody(): ArrayTypeParameterInterface
     {
         return arrayp()->withOptional(
             rate: float(minimum: 16.5),
@@ -44,7 +44,7 @@ class GetController extends HttpController
         );
     }
 
-    public function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp(test: string('/^test$/'));
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
-use Chevere\Router\Bind;
+use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use function Chevere\Router\route;
 use function Chevere\Router\router;
@@ -35,7 +35,7 @@ final class SpecTest extends TestCase
             ->withEndpoint(
                 new Endpoint(
                     $get,
-                    new Bind(new GetController())
+                    bind(GetController::class)
                 )
             );
         $router = router(routes($route));

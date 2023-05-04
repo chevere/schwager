@@ -30,24 +30,24 @@ final class EndpointSchema implements ToArrayInterface
      */
     public function toArray(): array
     {
-        $controller = $this->endpoint->bind()->controller();
+        $controller = $this->endpoint->bind()->controllerName();
 
         return [
             'description' => $this->endpoint->description(),
             'query' => $this->getQuerySchema(
-                $controller->acceptQuery()->items()
+                $controller::acceptQuery()->items()
             ),
-            'body' => $controller->acceptBody()->schema(),
+            'body' => $controller::acceptBody()->schema(),
             'response' => [
                 'success' => [
-                    'code' => $controller->statusSuccess(),
-                    'headers' => $controller->responseHeaders(),
-                    'body' => $controller->acceptResponse()->schema(),
+                    'code' => $controller::statusSuccess(),
+                    'headers' => $controller::responseHeaders(),
+                    'body' => $controller::acceptResponse()->schema(),
                 ],
                 'error' => [
                     'code' => integer(minimum: 400, maximum: 599)->schema(),
-                    'headers' => $controller->responseHeaders(),
-                    'body' => $controller->expectError()->schema(),
+                    'headers' => $controller::responseHeaders(),
+                    'body' => $controller::acceptError()->schema(),
                 ],
             ],
         ];
