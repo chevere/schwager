@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use function Chevere\Parameter\integer;
+use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
 
@@ -30,6 +30,7 @@ final class EndpointSchema implements ToArrayInterface
      */
     public function toArray(): array
     {
+        /** @var HttpControllerInterface $controller */
         $controller = $this->endpoint->bind()->controllerName();
 
         return [
@@ -39,13 +40,11 @@ final class EndpointSchema implements ToArrayInterface
             ),
             'body' => $controller::acceptBody()->schema(),
             'response' => [
-                'success' => [
-                    'code' => $controller::statusSuccess(),
+                $controller::statusSuccess() => [
                     'headers' => $controller::responseHeaders(),
                     'body' => $controller::acceptResponse()->schema(),
                 ],
-                'error' => [
-                    'code' => integer(minimum: 400, maximum: 599)->schema(),
+                $controller::statusError() => [
                     'headers' => $controller::responseHeaders(),
                     'body' => $controller::acceptError()->schema(),
                 ],

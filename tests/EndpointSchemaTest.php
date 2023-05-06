@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
-use function Chevere\Parameter\integer;
 use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
@@ -30,7 +29,6 @@ final class EndpointSchemaTest extends TestCase
         $bind = bind($controller);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
-        $errorCode = integer(minimum: 400, maximum: 599);
         $date = $controller::acceptQuery()->items()->get('date')->schema();
         $time = $controller::acceptQuery()->items()->get('time')->schema();
         $this->assertSame([
@@ -45,13 +43,11 @@ final class EndpointSchemaTest extends TestCase
             ],
             'body' => $controller::acceptBody()->schema(),
             'response' => [
-                'success' => [
-                    'code' => $controller::statusSuccess(),
+                $controller::statusSuccess() => [
                     'headers' => $controller::responseHeaders(),
                     'body' => $controller::acceptResponse()->schema(),
                 ],
-                'error' => [
-                    'code' => $errorCode->schema(),
+                $controller::statusError() => [
                     'headers' => $controller::responseHeaders(),
                     'body' => $controller::acceptError()->schema(),
                 ],
