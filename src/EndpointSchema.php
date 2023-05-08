@@ -16,7 +16,6 @@ namespace Chevere\Schwager;
 use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
-use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\string;
 use Chevere\Router\Interfaces\EndpointInterface;
@@ -24,7 +23,7 @@ use Chevere\Router\Interfaces\EndpointInterface;
 final class EndpointSchema implements ToArrayInterface
 {
     /**
-     * @var array<int|string, array<string, mixed>>
+     * @var array<string, array<string, mixed>>
      */
     private array $middlewares = [];
 
@@ -32,30 +31,11 @@ final class EndpointSchema implements ToArrayInterface
         private EndpointInterface $endpoint,
         MiddlewaresInterface $middlewares = null
     ) {
-        if ($middlewares === null) {
-            return;
+        foreach ($middlewares ?? [] as $middleware) {
+            $key = strval($middleware->__toString()::statusError());
+            $schema = new MiddlewareSchema($middleware);
+            $this->middlewares[$key] = $schema->toArray();
         }
-        foreach ($middlewares as $middleware) {
-            $this->middlewares[$middleware->__toString()::statusError()] = $this->middlewareSchema();
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @infection-ignore-all
-     */
-    public function middlewareSchema(): array
-    {
-        return [
-            'headers' => [
-                'Content-Disposition' => 'inline',
-                'Content-Type' => 'application/json',
-            ],
-            'body' => arrayp(
-                code: string(),
-                message: string()
-            )->schema(),
-        ];
     }
 
     /**

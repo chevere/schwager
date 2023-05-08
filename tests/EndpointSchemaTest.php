@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
-use function Chevere\Http\middlewares;
+use Chevere\Http\MiddlewareName;
+use Chevere\Http\Middlewares;
 use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
+use Chevere\Schwager\MiddlewareSchema;
 use Chevere\Tests\_resources\src\GetController;
 use Chevere\Tests\_resources\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +32,8 @@ final class EndpointSchemaTest extends TestCase
         $controller = GetController::class;
         $bind = bind($controller);
         $endpoint = new Endpoint($method, $bind);
-        $middlewares = middlewares(MiddlewareOne::class);
+        $middlewareName = new MiddlewareName(MiddlewareOne::class);
+        $middlewares = new Middlewares($middlewareName);
         $schema = new EndpointSchema($endpoint, $middlewares);
         $date = $controller::acceptQuery()->items()->get('date')->schema();
         $time = $controller::acceptQuery()->items()->get('time')->schema();
@@ -44,7 +47,7 @@ final class EndpointSchemaTest extends TestCase
                 'body' => $controller::acceptError()->schema(),
             ],
         ];
-        $response[MiddlewareOne::statusError()] = $schema->middlewareSchema();
+        $response[MiddlewareOne::statusError()] = (new MiddlewareSchema($middlewareName))->toArray();
         $this->assertSame([
             'description' => $endpoint->description(),
             'query' => [
