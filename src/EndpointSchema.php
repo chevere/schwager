@@ -31,7 +31,7 @@ final class EndpointSchema implements ToArrayInterface
     public function toArray(): array
     {
         /** @var HttpControllerInterface $controller */
-        $controller = $this->endpoint->bind()->controllerName();
+        $controller = $this->endpoint->bind()->controllerName()->__toString();
 
         return [
             'description' => $this->endpoint->description(),
