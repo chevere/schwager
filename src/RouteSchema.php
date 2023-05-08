@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
+use function Chevere\Parameter\string;
 use Chevere\Router\Interfaces\EndpointInterface;
 use Chevere\Router\Interfaces\RouteInterface;
 
@@ -49,13 +50,14 @@ final class RouteSchema implements ToArrayInterface
      */
     private function getEndpoints(RouteInterface $route): array
     {
-        $array = [];
+        $return = [];
         foreach ($route->endpoints() as $endpoint) {
-            $schema = new EndpointSchema($endpoint);
-            $array[$endpoint->method()->name()] = $schema->toArray();
+            $schema = new EndpointSchema($endpoint, $route->middlewares());
+            $array = $schema->toArray();
+            $return[$endpoint->method()->name()] = $array;
         }
 
-        return $array;
+        return $return;
     }
 
     /**
@@ -65,7 +67,7 @@ final class RouteSchema implements ToArrayInterface
     {
         $array = [];
         foreach ($route->path()->wildcards() as $name => $wildcard) {
-            $parameters = $this->firstEndpoint->bind()->controllerName()::getParameters();
+            $parameters = $this->firstEndpoint->bind()->controllerName()->__toString()::getParameters();
             $description = $parameters->get($name)->description();
             $schema = new WildcardSchema($wildcard, $description);
             $array[$name] = $schema->toArray();

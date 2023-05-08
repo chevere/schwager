@@ -38,7 +38,7 @@ final class RouteSchemaTest extends TestCase
             new PutMethod(),
             bind(PutController::class)
         );
-        $parameters = $getEndpoint->bind()->controllerName()::getParameters();
+        $parameters = $getEndpoint->bind()->controllerName()->__toString()::getParameters();
         $route = $route
             ->withEndpoint($getEndpoint)
             ->withEndpoint($putEndpoint);

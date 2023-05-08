@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
+use function Chevere\Http\middlewares;
 use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Tests\_resources\src\GetController;
+use Chevere\Tests\_resources\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointSchemaTest extends TestCase
@@ -28,9 +30,21 @@ final class EndpointSchemaTest extends TestCase
         $controller = GetController::class;
         $bind = bind($controller);
         $endpoint = new Endpoint($method, $bind);
-        $schema = new EndpointSchema($endpoint);
+        $middlewares = middlewares(MiddlewareOne::class);
+        $schema = new EndpointSchema($endpoint, $middlewares);
         $date = $controller::acceptQuery()->items()->get('date')->schema();
         $time = $controller::acceptQuery()->items()->get('time')->schema();
+        $response = [
+            $controller::statusSuccess() => [
+                'headers' => $controller::responseHeaders(),
+                'body' => $controller::acceptResponse()->schema(),
+            ],
+            $controller::statusError() => [
+                'headers' => $controller::responseHeaders(),
+                'body' => $controller::acceptError()->schema(),
+            ],
+        ];
+        $response[MiddlewareOne::statusError()] = $schema->middlewareSchema();
         $this->assertSame([
             'description' => $endpoint->description(),
             'query' => [
@@ -42,16 +56,7 @@ final class EndpointSchemaTest extends TestCase
                 ] + $time,
             ],
             'body' => $controller::acceptBody()->schema(),
-            'response' => [
-                $controller::statusSuccess() => [
-                    'headers' => $controller::responseHeaders(),
-                    'body' => $controller::acceptResponse()->schema(),
-                ],
-                $controller::statusError() => [
-                    'headers' => $controller::responseHeaders(),
-                    'body' => $controller::acceptError()->schema(),
-                ],
-            ],
+            'response' => $response,
         ], $schema->toArray());
     }
 }
