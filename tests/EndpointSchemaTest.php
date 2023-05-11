@@ -30,11 +30,11 @@ final class EndpointSchemaTest extends TestCase
     {
         $method = new GetMethod();
         $controller = GetController::class;
-        $bind = bind($controller);
-        $endpoint = new Endpoint($method, $bind);
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
         $middlewares = new Middlewares($middlewareName);
-        $schema = new EndpointSchema($endpoint, $middlewares);
+        $bind = bind($controller, $middlewares);
+        $endpoint = new Endpoint($method, $bind);
+        $schema = new EndpointSchema($endpoint);
         $date = $controller::acceptQuery()->items()->get('date')->schema();
         $time = $controller::acceptQuery()->items()->get('time')->schema();
         $response = [

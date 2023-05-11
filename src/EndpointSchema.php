@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\string;
@@ -29,9 +28,8 @@ final class EndpointSchema implements ToArrayInterface
 
     public function __construct(
         private EndpointInterface $endpoint,
-        MiddlewaresInterface $middlewares = null
     ) {
-        foreach ($middlewares ?? [] as $middleware) {
+        foreach ($endpoint->bind()->middlewares() as $middleware) {
             $key = strval($middleware->__toString()::statusError());
             $schema = new MiddlewareSchema($middleware);
             $this->middlewares[$key] = $schema->toArray();

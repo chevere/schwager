@@ -52,7 +52,7 @@ final class RouteSchema implements ToArrayInterface
     {
         $return = [];
         foreach ($route->endpoints() as $endpoint) {
-            $schema = new EndpointSchema($endpoint, $route->middlewares());
+            $schema = new EndpointSchema($endpoint);
             $array = $schema->toArray();
             $return[$endpoint->method()->name()] = $array;
         }
