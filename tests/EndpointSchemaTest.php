@@ -35,8 +35,8 @@ final class EndpointSchemaTest extends TestCase
         $bind = bind($controller, $middlewares);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
-        $date = $controller::acceptQuery()->items()->get('date')->schema();
-        $time = $controller::acceptQuery()->items()->get('time')->schema();
+        $date = $controller::acceptQuery()->parameters()->get('date')->schema();
+        $time = $controller::acceptQuery()->parameters()->get('time')->schema();
         $response = [
             $controller::statusSuccess() => [
                 'headers' => $controller::responseHeaders(),

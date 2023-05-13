@@ -47,7 +47,7 @@ final class EndpointSchema implements ToArrayInterface
         return [
             'description' => $this->endpoint->description(),
             'query' => $this->getQuerySchema(
-                $controller::acceptQuery()->items()
+                $controller::acceptQuery()->parameters()
             ),
             'body' => $controller::acceptBody()->schema(),
             'response' => [
