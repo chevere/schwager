@@ -44,7 +44,7 @@ final class EndpointSchema implements ToArrayInterface
         /** @var HttpControllerInterface $controller */
         $controller = $this->endpoint->bind()->controllerName()->__toString();
 
-        return [
+        $return = [
             'description' => $this->endpoint->description(),
             'query' => $this->getQuerySchema(
                 $controller::acceptQuery()->parameters()
@@ -61,6 +61,9 @@ final class EndpointSchema implements ToArrayInterface
                 ],
             ] + $this->middlewares,
         ];
+        ksort($return['response']);
+
+        return $return;
     }
 
     /**

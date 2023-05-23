@@ -48,6 +48,7 @@ final class EndpointSchemaTest extends TestCase
             ],
         ];
         $response[MiddlewareOne::statusError()] = (new MiddlewareSchema($middlewareName))->toArray();
+        ksort($response);
         $this->assertSame([
             'description' => $endpoint->description(),
             'query' => [
