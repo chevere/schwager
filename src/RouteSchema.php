@@ -22,6 +22,11 @@ final class RouteSchema implements ToArrayInterface
 {
     private EndpointInterface $firstEndpoint;
 
+    /**
+     * @var array<string, mixed>
+     */
+    private array $array;
+
     public function __construct(
         private RouteInterface $route,
         private string $group
@@ -29,14 +34,7 @@ final class RouteSchema implements ToArrayInterface
         $iterator = $route->endpoints()->getIterator();
         $iterator->rewind(); // @codeCoverageIgnore
         $this->firstEndpoint = $iterator->current();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toArray(): array
-    {
-        return [
+        $this->array = [
             'name' => $this->route->name(),
             'group' => $this->group,
             'regex' => $this->route->path()->regex()->noDelimiters(),
@@ -48,14 +46,22 @@ final class RouteSchema implements ToArrayInterface
     /**
      * @return array<string, mixed>
      */
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     private function getEndpoints(RouteInterface $route): array
     {
         $return = [];
         foreach ($route->endpoints() as $endpoint) {
             $schema = new EndpointSchema($endpoint);
-            $array = $schema->toArray();
-            $return[$endpoint->method()->name()] = $array;
+            $return[$endpoint->method()->name()] = $schema->toArray();
         }
+        ksort($return);
 
         return $return;
     }
@@ -72,6 +78,7 @@ final class RouteSchema implements ToArrayInterface
             $schema = new WildcardSchema($wildcard, $description);
             $array[$name] = $schema->toArray();
         }
+        ksort($array);
 
         return $array;
     }

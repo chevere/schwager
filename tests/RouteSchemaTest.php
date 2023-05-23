@@ -58,8 +58,8 @@ final class RouteSchemaTest extends TestCase
                 'group' => $group,
                 'regex' => $route->path()->regex()->noDelimiters(),
                 'wildcards' => [
-                    'name' => $nameWildcardSchema->toArray(),
                     'id' => $idWildcardSchema->toArray(),
+                    'name' => $nameWildcardSchema->toArray(),
                 ],
                 'endpoints' => [
                     'GET' => (new EndpointSchema($getEndpoint))->toArray(),

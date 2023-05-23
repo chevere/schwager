@@ -35,6 +35,8 @@ final class Spec implements ToArrayInterface
         foreach ($router->routes() as $id => $route) {
             $this->putPath($id, $route);
         }
+        // @phpstan-ignore-next-line
+        asort($this->array['paths']);
     }
 
     /**
