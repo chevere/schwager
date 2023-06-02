@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\_resources\src;
 
-use Chevere\Attribute\StringAttribute;
-use Chevere\HttpController\HttpController;
+use Chevere\Attribute\StringRegex;
+use Chevere\Http\Controller;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\date;
@@ -24,8 +24,10 @@ use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
+use Chevere\Schwager\Attributes\Status;
 
-class GetController extends HttpController
+#[Status(200), Status(404)]
+class GetController extends Controller
 {
     public static function acceptQuery(): ArrayStringParameterInterface
     {
@@ -50,9 +52,9 @@ class GetController extends HttpController
     }
 
     public function run(
-        #[StringAttribute('/^[0-9]+$/', 'The user integer id')]
+        #[StringRegex('/^[0-9]+$/', 'The user integer id')]
         string $id,
-        #[StringAttribute('/^[\w]+$/', 'The user name')]
+        #[StringRegex('/^[\w]+$/', 'The user name')]
         string $name
     ): array {
         return [

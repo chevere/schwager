@@ -22,8 +22,8 @@ final class MiddlewareSchemaTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $middlewareName = new MiddlewareName(MiddlewareOne::class);
-        $schema = new MiddlewareSchema($middlewareName);
+        $name = new MiddlewareName(MiddlewareOne::class);
+        $schema = new MiddlewareSchema($name);
         $this->assertSame([
             'context' => 'MiddlewareOne',
             'headers' => [

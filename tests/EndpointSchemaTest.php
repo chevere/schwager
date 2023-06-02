@@ -42,10 +42,6 @@ final class EndpointSchemaTest extends TestCase
                 'headers' => $controller::responseHeaders(),
                 'body' => $controller::acceptResponse()->schema(),
             ],
-            $controller::statusError() => [
-                'headers' => $controller::responseHeaders(),
-                'body' => $controller::acceptError()->schema(),
-            ],
         ];
         $response[MiddlewareOne::statusError()] = (new MiddlewareSchema($middlewareName))->toArray();
         ksort($response);
