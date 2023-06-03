@@ -18,6 +18,7 @@ use Chevere\Http\MiddlewareName;
 use Chevere\Http\Middlewares;
 use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
+use function Chevere\Schwager\classStatuses;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Schwager\MiddlewareSchema;
 use Chevere\Tests\_resources\src\GetController;
@@ -31,6 +32,7 @@ final class EndpointSchemaTest extends TestCase
         $method = new GetMethod();
         $controller = GetController::class;
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
+        $middlewareStatuses = classStatuses(MiddlewareOne::class);
         $middlewares = new Middlewares($middlewareName);
         $bind = bind($controller, $middlewares);
         $endpoint = new Endpoint($method, $bind);
@@ -38,12 +40,12 @@ final class EndpointSchemaTest extends TestCase
         $date = $controller::acceptQuery()->parameters()->get('date')->schema();
         $time = $controller::acceptQuery()->parameters()->get('time')->schema();
         $response = [
-            $controller::statusSuccess() => [
+            200 => [
                 'headers' => $controller::responseHeaders(),
                 'body' => $controller::acceptResponse()->schema(),
             ],
         ];
-        $response[MiddlewareOne::statusError()] = (new MiddlewareSchema($middlewareName))->toArray();
+        $response[$middlewareStatuses->primary] = (new MiddlewareSchema($middlewareName))->toArray();
         ksort($response);
         $this->assertSame([
             'description' => $endpoint->description(),

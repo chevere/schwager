@@ -24,9 +24,9 @@ use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
-use Chevere\Schwager\Attributes\Status;
+use Chevere\Schwager\Attributes\Statuses;
 
-#[Status(200), Status(404)]
+#[Statuses(200, 403)]
 class GetController extends Controller
 {
     public static function acceptQuery(): ArrayStringParameterInterface

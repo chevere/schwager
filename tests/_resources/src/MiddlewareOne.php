@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\_resources\src;
 
+use Chevere\Schwager\Attributes\Statuses;
+
+#[Statuses(401)]
 class MiddlewareOne extends Middleware
 {
-    public static function statusError(): int
-    {
-        return 401;
-    }
 }

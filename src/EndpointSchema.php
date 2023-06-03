@@ -18,12 +18,11 @@ use Chevere\Http\Interfaces\ControllerInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\string;
 use Chevere\Router\Interfaces\EndpointInterface;
-use ReflectionClass;
 
 final class EndpointSchema implements ToArrayInterface
 {
     /**
-     * @var array<string, array<string, mixed>>
+     * @var array<string|int, array<string, mixed>>
      */
     private array $middlewares = [];
 
@@ -31,9 +30,10 @@ final class EndpointSchema implements ToArrayInterface
         private EndpointInterface $endpoint,
     ) {
         foreach ($endpoint->bind()->middlewares() as $middleware) {
-            $key = strval($middleware->__toString()::statusError());
+            $class = $middleware->__toString();
+            $statuses = classStatuses($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->middlewares[$key] = $schema->toArray();
+            $this->middlewares[$statuses->primary] = $schema->toArray();
         }
     }
 
@@ -42,13 +42,9 @@ final class EndpointSchema implements ToArrayInterface
      */
     public function toArray(): array
     {
-        /** @var ControllerInterface $controller */
         $controller = $this->endpoint->bind()->controllerName()->__toString();
-        // $reflection = new ReflectionClass($controller);
-        // $attributes = $reflection->getAttributes();
-        // foreach ($attributes as $attribute) {
-        //     vdd($attribute->newInstance());
-        // }
+        $statuses = classStatuses($controller);
+        /** @var ControllerInterface $controller */
         $return = [
             'description' => $this->endpoint->description(),
             'query' => $this->getQuerySchema(
@@ -56,7 +52,7 @@ final class EndpointSchema implements ToArrayInterface
             ),
             'body' => $controller::acceptBody()->schema(),
             'response' => [
-                $controller::statusSuccess() => [
+                $statuses->primary => [
                     'headers' => $controller::responseHeaders(),
                     'body' => $controller::acceptResponse()->schema(),
                 ],
