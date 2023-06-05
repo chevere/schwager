@@ -15,7 +15,7 @@ namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
 use function Chevere\Http\classHeaders;
-use function Chevere\Http\classStatuses;
+use function Chevere\Http\classStatus;
 use Chevere\Http\Interfaces\ControllerInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\string;
@@ -33,9 +33,9 @@ final class EndpointSchema implements ToArrayInterface
     ) {
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
-            $statuses = classStatuses($class);
+            $status = classStatus($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->middlewares[$statuses->primary] = $schema->toArray();
+            $this->middlewares[$status->primary] = $schema->toArray();
         }
     }
 
@@ -46,7 +46,7 @@ final class EndpointSchema implements ToArrayInterface
     {
         $controller = $this->endpoint->bind()->controllerName()->__toString();
         $headers = classHeaders($controller);
-        $statuses = classStatuses($controller);
+        $status = classStatus($controller);
         /** @var ControllerInterface $controller */
         $return = [
             'description' => $this->endpoint->description(),
@@ -55,8 +55,8 @@ final class EndpointSchema implements ToArrayInterface
             ),
             'body' => $controller::acceptBody()->schema(),
             'response' => [
-                $statuses->primary => [
-                    'headers' => $headers->array,
+                $status->primary => [
+                    'headers' => $headers->lines,
                     'body' => $controller::acceptResponse()->schema(),
                 ],
             ] + $this->middlewares,

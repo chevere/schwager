@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\_resources\src;
 
-use Chevere\Http\Attributes\Statuses;
+use Chevere\Http\Attributes\Status;
 
-#[Statuses(401)]
+#[Status(401)]
 class MiddlewareOne extends Middleware
 {
 }

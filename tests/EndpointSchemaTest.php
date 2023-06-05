@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use function Chevere\Http\classHeaders;
-use function Chevere\Http\classStatuses;
+use function Chevere\Http\classStatus;
 use Chevere\Http\Methods\GetMethod;
 use Chevere\Http\MiddlewareName;
 use Chevere\Http\Middlewares;
@@ -33,7 +33,7 @@ final class EndpointSchemaTest extends TestCase
         $method = new GetMethod();
         $controller = GetController::class;
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
-        $middlewareStatuses = classStatuses(MiddlewareOne::class);
+        $middlewareStatus = classStatus(MiddlewareOne::class);
         $middlewares = new Middlewares($middlewareName);
         $bind = bind($controller, $middlewares);
         $endpoint = new Endpoint($method, $bind);
@@ -43,11 +43,11 @@ final class EndpointSchemaTest extends TestCase
         $headers = classHeaders($controller);
         $response = [
             200 => [
-                'headers' => $headers->array,
+                'headers' => $headers->lines,
                 'body' => $controller::acceptResponse()->schema(),
             ],
         ];
-        $response[$middlewareStatuses->primary] = (new MiddlewareSchema($middlewareName))->toArray();
+        $response[$middlewareStatus->primary] = (new MiddlewareSchema($middlewareName))->toArray();
         ksort($response);
         $this->assertSame([
             'description' => $endpoint->description(),
