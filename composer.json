@@ -23,9 +23,6 @@
         "symplify/easy-coding-standard": "^11.1"
     },
     "autoload": {
-        "files": [
-            "src/functions.php"
-        ],
         "psr-4": {
             "Chevere\\Schwager\\": "src/"
         }

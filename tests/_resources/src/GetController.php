@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\_resources\src;
 
 use Chevere\Attribute\StringRegex;
+use Chevere\Http\Attributes\Statuses;
 use Chevere\Http\Controller;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
@@ -24,7 +25,6 @@ use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
-use Chevere\Schwager\Attributes\Statuses;
 
 #[Statuses(200, 403)]
 class GetController extends Controller
