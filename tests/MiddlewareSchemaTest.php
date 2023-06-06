@@ -27,7 +27,6 @@ final class MiddlewareSchemaTest extends TestCase
         $this->assertSame([
             'context' => 'MiddlewareOne',
             'headers' => [],
-            'body' => $schema->acceptBody()->schema(),
         ], $schema->toArray());
     }
 }

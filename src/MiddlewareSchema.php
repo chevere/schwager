@@ -16,8 +16,6 @@ namespace Chevere\Schwager;
 use Chevere\Common\Interfaces\ToArrayInterface;
 use function Chevere\Http\classHeaders;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
-use function Chevere\Parameter\arrayp;
-use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use function Chevere\Parameter\string;
 
 final class MiddlewareSchema implements ToArrayInterface
@@ -34,7 +32,6 @@ final class MiddlewareSchema implements ToArrayInterface
         $this->array = [
             'context' => $context,
             'headers' => classHeaders($name)->toArray(),
-            'body' => $this->acceptBody()->schema(),
         ];
     }
 
@@ -44,13 +41,6 @@ final class MiddlewareSchema implements ToArrayInterface
     public function toArray(): array
     {
         return $this->array;
-    }
-
-    public function acceptBody(): ArrayParameterInterface
-    {
-        return arrayp(
-            message: string(),
-        )->withOptional(code: string());
     }
 
     private function getShortName(string $name): string
