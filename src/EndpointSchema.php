@@ -47,6 +47,9 @@ final class EndpointSchema implements ToArrayInterface
         $controller = $this->endpoint->bind()->controllerName()->__toString();
         $headers = classHeaders($controller);
         $status = classStatus($controller);
+        $statuses = array_fill_keys($status->other, [
+            'context' => $this->getShortName($controller),
+        ]);
         /** @var ControllerInterface $controller */
         $return = [
             'description' => $this->endpoint->description(),
@@ -59,7 +62,7 @@ final class EndpointSchema implements ToArrayInterface
                     'headers' => $headers->toArray(),
                     'body' => $controller::acceptResponse()->schema(),
                 ],
-            ] + $this->middlewares,
+            ] + $statuses + $this->middlewares,
         ];
         ksort($return['response']);
 
@@ -81,5 +84,12 @@ final class EndpointSchema implements ToArrayInterface
         }
 
         return $array;
+    }
+
+    private function getShortName(string $name): string
+    {
+        $explode = explode('\\', $name);
+
+        return array_pop($explode);
     }
 }

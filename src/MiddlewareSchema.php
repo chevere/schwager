@@ -16,7 +16,6 @@ namespace Chevere\Schwager;
 use Chevere\Common\Interfaces\ToArrayInterface;
 use function Chevere\Http\classHeaders;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
-use function Chevere\Parameter\string;
 
 final class MiddlewareSchema implements ToArrayInterface
 {

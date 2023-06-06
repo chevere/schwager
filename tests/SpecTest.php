@@ -30,15 +30,21 @@ final class SpecTest extends TestCase
     public function testBuild(): void
     {
         $get = new GetMethod();
-        $route = route('/user/{id}');
-        $route = $route
+        $route = route('/user/{id}')
             ->withEndpoint(
                 new Endpoint(
                     $get,
                     bind(GetController::class)
                 )
             );
-        $router = router(routes($route));
+        $routeAlt = route('/customer/{id}')
+            ->withEndpoint(
+                new Endpoint(
+                    $get,
+                    bind(GetController::class)
+                )
+            );
+        $router = router(routes($route, $routeAlt));
         $document = new DocumentSchema();
         $testServer = new ServerSchema('testServerUrl', 'test');
         $productionServer = new ServerSchema('productionServerUrl', 'test');
@@ -48,6 +54,9 @@ final class SpecTest extends TestCase
             $testServer->toArray(),
             $productionServer->toArray(),
         ], $array['servers']);
-        $this->assertCount(1, $array['paths']);
+        $this->assertSame(
+            ['/customer/{id}', '/user/{id}'],
+            array_keys($array['paths'])
+        );
     }
 }

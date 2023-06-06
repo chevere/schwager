@@ -19,9 +19,9 @@ use Chevere\Http\Controller;
 class PutController extends Controller
 {
     public function run(
-        #[StringRegex('/^[0-9]+$/')]
+        #[StringRegex('/^[0-9]+$/', 'The user integer id')]
         string $id,
-        #[StringRegex('/^[\w]+$/')]
+        #[StringRegex('/^[\w]+$/', 'The user name')]
         string $name
     ): array {
         return [];

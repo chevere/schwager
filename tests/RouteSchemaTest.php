@@ -40,8 +40,8 @@ final class RouteSchemaTest extends TestCase
         );
         $parameters = $getEndpoint->bind()->controllerName()->__toString()::getParameters();
         $route = $route
-            ->withEndpoint($getEndpoint)
-            ->withEndpoint($putEndpoint);
+            ->withEndpoint($putEndpoint)
+            ->withEndpoint($getEndpoint);
         $group = 'test';
         $schema = new RouteSchema($route, $group);
         $idWildcardSchema = new WildcardSchema(
