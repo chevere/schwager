@@ -30,22 +30,23 @@ final class EndpointSchemaTest extends TestCase
     public function testSchema(): void
     {
         $method = new GetMethod();
-        $controller = GetController::class;
+        $controllerName = GetController::class;
+        $controllerStatus = classStatus($controllerName);
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
         $middlewareStatus = classStatus(MiddlewareOne::class);
         $middlewares = new Middlewares($middlewareName);
-        $bind = bind($controller, $middlewares);
+        $bind = bind($controllerName, $middlewares);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
-        $date = $controller::acceptQuery()->parameters()->get('date')->schema();
-        $time = $controller::acceptQuery()->parameters()->get('time')->schema();
+        $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
+        $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
         $response = [
-            200 => [
+            $controllerStatus->primary => [
                 'headers' => [
                     'foo' => 'bar',
                     'esta' => 'wea',
                 ],
-                'body' => $controller::acceptResponse()->schema(),
+                'body' => $controllerName::acceptResponse()->schema(),
             ],
         ];
         $response[$middlewareStatus->primary] = (new MiddlewareSchema($middlewareName))->toArray();
@@ -60,7 +61,7 @@ final class EndpointSchemaTest extends TestCase
                     'required' => false,
                 ] + $time,
             ],
-            'body' => $controller::acceptBody()->schema(),
+            'body' => $controllerName::acceptBody()->schema(),
             'response' => $response,
         ], $schema->toArray());
     }

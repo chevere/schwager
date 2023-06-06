@@ -27,7 +27,7 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
-#[Status(200, 403)]
+#[Status(222, 403)]
 #[Header('foo', 'bar')]
 #[Header('esta', 'wea')]
 class GetController extends Controller
