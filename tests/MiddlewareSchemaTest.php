@@ -26,10 +26,7 @@ final class MiddlewareSchemaTest extends TestCase
         $schema = new MiddlewareSchema($name);
         $this->assertSame([
             'context' => 'MiddlewareOne',
-            'headers' => [
-                'Content-Disposition' => 'inline',
-                'Content-Type' => 'application/json',
-            ],
+            'headers' => [],
             'body' => $schema->acceptBody()->schema(),
         ], $schema->toArray());
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
+use function Chevere\Http\classHeaders;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
 use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
@@ -28,13 +29,11 @@ final class MiddlewareSchema implements ToArrayInterface
 
     public function __construct(MiddlewareNameInterface $middleware)
     {
-        $context = $this->getShortName($middleware->__toString());
+        $name = $middleware->__toString();
+        $context = $this->getShortName($name);
         $this->array = [
             'context' => $context,
-            'headers' => [
-                'Content-Disposition' => 'inline',
-                'Content-Type' => 'application/json',
-            ],
+            'headers' => classHeaders($name)->toArray(),
             'body' => $this->acceptBody()->schema(),
         ];
     }
