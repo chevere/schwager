@@ -46,6 +46,10 @@ final class EndpointSchema implements ToArrayInterface
     {
         $controller = $this->endpoint->bind()->controllerName()->__toString();
         $headers = classHeaders($controller);
+        $allHeaders = [];
+        foreach ($headers as $header) {
+            $allHeaders[$header->name] = $header->value;
+        }
         $status = classStatus($controller);
         /** @var ControllerInterface $controller */
         $return = [
@@ -56,7 +60,7 @@ final class EndpointSchema implements ToArrayInterface
             'body' => $controller::acceptBody()->schema(),
             'response' => [
                 $status->primary => [
-                    'headers' => $headers->lines,
+                    'headers' => $allHeaders,
                     'body' => $controller::acceptResponse()->schema(),
                 ],
             ] + $this->middlewares,

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests;
 
-use function Chevere\Http\classHeaders;
 use function Chevere\Http\classStatus;
 use Chevere\Http\Methods\GetMethod;
 use Chevere\Http\MiddlewareName;
@@ -40,10 +39,12 @@ final class EndpointSchemaTest extends TestCase
         $schema = new EndpointSchema($endpoint);
         $date = $controller::acceptQuery()->parameters()->get('date')->schema();
         $time = $controller::acceptQuery()->parameters()->get('time')->schema();
-        $headers = classHeaders($controller);
         $response = [
             200 => [
-                'headers' => $headers->lines,
+                'headers' => [
+                    'foo' => 'bar',
+                    'esta' => 'wea',
+                ],
                 'body' => $controller::acceptResponse()->schema(),
             ],
         ];
