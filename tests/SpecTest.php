@@ -30,14 +30,14 @@ final class SpecTest extends TestCase
     public function testBuild(): void
     {
         $get = new GetMethod();
-        $route = route('/user/{id}')
+        $route = route('/user/{id}/{name}')
             ->withEndpoint(
                 new Endpoint(
                     $get,
                     bind(GetController::class)
                 )
             );
-        $routeAlt = route('/customer/{id}')
+        $routeAlt = route('/customer/{id}/{name}')
             ->withEndpoint(
                 new Endpoint(
                     $get,
@@ -55,7 +55,7 @@ final class SpecTest extends TestCase
             $productionServer->toArray(),
         ], $array['servers']);
         $this->assertSame(
-            ['/customer/{id}', '/user/{id}'],
+            ['/customer/{id}/{name}', '/user/{id}/{name}'],
             array_keys($array['paths'])
         );
     }

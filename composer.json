@@ -12,12 +12,11 @@
         }
     ],
     "require": {
-        "chevere/chevere": "^3.0.x-dev",
-        "chevere/http": "^0.1.x-dev",
-        "chevere/router": "^0.3.x-dev"
+        "chevere/chevere": "^3.0",
+        "chevere/http": "^0.1",
+        "chevere/router": "^0.3"
     },
     "require-dev": {
-        "chevere/var-dump": "^0.8.x-dev",
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^9.5",
         "symplify/easy-coding-standard": "^11.1"
