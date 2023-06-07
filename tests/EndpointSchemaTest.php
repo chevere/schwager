@@ -41,15 +41,16 @@ final class EndpointSchemaTest extends TestCase
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
         $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
         $response = [];
-        $response[$middlewareStatus->primary] = (new MiddlewareSchema($middlewareName))->toArray();
-        $response[$controllerStatus->primary] = [
+        $middlewareSchema = new MiddlewareSchema($middlewareName);
+        $response[$middlewareStatus->primary][] = $middlewareSchema->toArray();
+        $response[$controllerStatus->primary][] = [
             'headers' => [
                 'foo' => 'bar',
                 'esta' => 'wea',
             ],
             'body' => $controllerName::acceptResponse()->schema(),
         ];
-        $response[403] = [
+        $response[403][] = [
             'context' => 'GetController',
         ];
         ksort($response);

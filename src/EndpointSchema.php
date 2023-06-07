@@ -24,19 +24,48 @@ use Chevere\Router\Interfaces\EndpointInterface;
 final class EndpointSchema implements ToArrayInterface
 {
     /**
-     * @var array<string|int, array<string, mixed>>
+     * @var array<string, mixed>
      */
-    private array $middlewares = [];
+    private array $array = [];
+
+    /**
+     * @var array<int, array<int|string, mixed>>
+     */
+    private array $response;
 
     public function __construct(
         private EndpointInterface $endpoint,
     ) {
+        $this->response = [];
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
             $status = classStatus($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->middlewares[$status->primary] = $schema->toArray();
+            $this->response[$status->primary][] = $schema->toArray();
         }
+        $controller = $this->endpoint->bind()->controllerName()->__toString();
+        $headers = classHeaders($controller);
+        $status = classStatus($controller);
+        $statuses = array_fill_keys($status->other, [
+            'context' => $this->getShortName($controller),
+        ]);
+        foreach ($statuses as $code => $array) {
+            $this->response[$code][] = $array;
+        }
+        /** @var ControllerInterface $controller */
+        $this->response[$status->primary][] = [
+            'headers' => $headers->toArray(),
+            'body' => $controller::acceptResponse()->schema(),
+        ];
+        ksort($this->response);
+        $this->array = [
+            'description' => $this->endpoint->description(),
+            'query' => $this->getQuerySchema(
+                $controller::acceptQuery()->parameters()
+            ),
+            'body' => $controller::acceptBody()->schema(),
+            'response' => $this->response,
+        ];
     }
 
     /**
@@ -44,29 +73,7 @@ final class EndpointSchema implements ToArrayInterface
      */
     public function toArray(): array
     {
-        $controller = $this->endpoint->bind()->controllerName()->__toString();
-        $headers = classHeaders($controller);
-        $status = classStatus($controller);
-        $statuses = array_fill_keys($status->other, [
-            'context' => $this->getShortName($controller),
-        ]);
-        /** @var ControllerInterface $controller */
-        $return = [
-            'description' => $this->endpoint->description(),
-            'query' => $this->getQuerySchema(
-                $controller::acceptQuery()->parameters()
-            ),
-            'body' => $controller::acceptBody()->schema(),
-            'response' => [
-                $status->primary => [
-                    'headers' => $headers->toArray(),
-                    'body' => $controller::acceptResponse()->schema(),
-                ],
-            ] + $statuses + $this->middlewares,
-        ];
-        ksort($return['response']);
-
-        return $return;
+        return $this->array;
     }
 
     /**
