@@ -19,6 +19,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/chevere/schwager/badge)](https://www.codefactor.io/repository/github/chevere/schwager)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/df08d136440c4b448076b85ed48bb4b6)](https://www.codacy.com/gh/chevere/schwager/dashboard)
 
+![Schwager](.github/banner/schwager-logo.svg)
+
 ## Documentation
 
 Documentation is available at [chevere.org](https://chevere.org/).
