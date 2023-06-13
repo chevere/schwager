@@ -18,8 +18,8 @@ use Chevere\Common\Interfaces\ToArrayInterface;
 final class ServerSchema implements ToArrayInterface
 {
     public function __construct(
-        private string $url,
-        private string $description,
+        public readonly string $url,
+        public readonly string $description,
     ) {
     }
 

@@ -18,9 +18,9 @@ use Chevere\Common\Interfaces\ToArrayInterface;
 final class DocumentSchema implements ToArrayInterface
 {
     public function __construct(
-        private string $api = 'chevere',
-        private string $name = 'Chevere API',
-        private string $version = '1.0.0',
+        public readonly string $api = 'chevere',
+        public readonly string $name = 'Chevere API',
+        public readonly string $version = '1.0.0',
     ) {
     }
 
