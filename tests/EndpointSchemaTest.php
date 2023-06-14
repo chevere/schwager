@@ -65,7 +65,7 @@ final class EndpointSchemaTest extends TestCase
                 ] + $time,
             ],
             'body' => $controllerName::acceptBody()->schema(),
-            'response' => $response,
+            'responses' => $response,
         ], $schema->toArray());
     }
 }

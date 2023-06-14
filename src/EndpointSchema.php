@@ -31,17 +31,17 @@ final class EndpointSchema implements ToArrayInterface
     /**
      * @var array<int, array<int|string, mixed>>
      */
-    private array $response;
+    private array $responses;
 
     public function __construct(
         private EndpointInterface $endpoint,
     ) {
-        $this->response = [];
+        $this->responses = [];
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
             $status = classStatus($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->response[$status->primary][] = $schema->toArray();
+            $this->responses[$status->primary][] = $schema->toArray();
         }
         $controller = $this->endpoint->bind()->controllerName()->__toString();
         $headers = classHeaders($controller);
@@ -50,21 +50,21 @@ final class EndpointSchema implements ToArrayInterface
             'context' => $this->getShortName($controller),
         ]);
         foreach ($statuses as $code => $array) {
-            $this->response[$code][] = $array;
+            $this->responses[$code][] = $array;
         }
         /** @var ControllerInterface $controller */
-        $this->response[$status->primary][] = [
+        $this->responses[$status->primary][] = [
             'headers' => $headers->toArray(),
             'body' => $controller::acceptResponse()->schema(),
         ];
-        ksort($this->response);
+        ksort($this->responses);
         $this->array = [
             'description' => $this->endpoint->description(),
             'query' => $this->getQuerySchema(
                 $controller::acceptQuery()->parameters()
             ),
             'body' => $controller::acceptBody()->schema(),
-            'response' => $this->response,
+            'responses' => $this->responses,
         ];
     }
 
