@@ -38,7 +38,7 @@ final class RouteSchema implements ToArrayInterface
             'name' => $this->route->name(),
             'group' => $this->group,
             'regex' => $this->route->path()->regex()->noDelimiters(),
-            'wildcards' => $this->getWildcards($this->route),
+            'variables' => $this->getVariables($this->route),
             'endpoints' => $this->getEndpoints($this->route),
         ];
     }
@@ -69,13 +69,13 @@ final class RouteSchema implements ToArrayInterface
     /**
      *  @return array<string, mixed>
      */
-    private function getWildcards(RouteInterface $route): array
+    private function getVariables(RouteInterface $route): array
     {
         $array = [];
-        foreach ($route->path()->wildcards() as $name => $wildcard) {
+        foreach ($route->path()->variables() as $name => $variable) {
             $parameters = $this->firstEndpoint->bind()->controllerName()->__toString()::getParameters();
             $description = $parameters->get($name)->description();
-            $schema = new WildcardSchema($wildcard, $description);
+            $schema = new VariableSchema($variable, $description);
             $array[$name] = $schema->toArray();
         }
         ksort($array);

@@ -14,7 +14,7 @@
     "require": {
         "chevere/chevere": "^3.0",
         "chevere/http": "^0.1",
-        "chevere/router": "^0.3"
+        "chevere/router": "^0.4.x-dev"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.9",

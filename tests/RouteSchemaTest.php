@@ -20,7 +20,7 @@ use Chevere\Router\Endpoint;
 use function Chevere\Router\route;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Schwager\RouteSchema;
-use Chevere\Schwager\WildcardSchema;
+use Chevere\Schwager\VariableSchema;
 use Chevere\Tests\_resources\src\GetController;
 use Chevere\Tests\_resources\src\PutController;
 use PHPUnit\Framework\TestCase;
@@ -44,12 +44,12 @@ final class RouteSchemaTest extends TestCase
             ->withEndpoint($getEndpoint);
         $group = 'test';
         $schema = new RouteSchema($route, $group);
-        $idWildcardSchema = new WildcardSchema(
-            $route->path()->wildcards()->get('id'),
+        $idVariableSchema = new VariableSchema(
+            $route->path()->variables()->get('id'),
             $parameters->get('id')->description()
         );
-        $nameWildcardSchema = new WildcardSchema(
-            $route->path()->wildcards()->get('name'),
+        $nameVariableSchema = new VariableSchema(
+            $route->path()->variables()->get('name'),
             $parameters->get('name')->description()
         );
         $this->assertSame(
@@ -57,9 +57,9 @@ final class RouteSchemaTest extends TestCase
                 'name' => $route->name(),
                 'group' => $group,
                 'regex' => $route->path()->regex()->noDelimiters(),
-                'wildcards' => [
-                    'id' => $idWildcardSchema->toArray(),
-                    'name' => $nameWildcardSchema->toArray(),
+                'variables' => [
+                    'id' => $idVariableSchema->toArray(),
+                    'name' => $nameVariableSchema->toArray(),
                 ],
                 'endpoints' => [
                     'GET' => (new EndpointSchema($getEndpoint))->toArray(),

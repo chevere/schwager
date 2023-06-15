@@ -13,24 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests;
 
-use Chevere\Router\Wildcard;
-use Chevere\Router\WildcardMatch;
-use Chevere\Schwager\WildcardSchema;
+use Chevere\Router\Variable;
+use Chevere\Router\VariableRegex;
+use Chevere\Schwager\VariableSchema;
 use PHPUnit\Framework\TestCase;
 
-final class WildcardSchemaTest extends TestCase
+final class VariableSchemaTest extends TestCase
 {
     public function testSchema(): void
     {
-        $match = new WildcardMatch('[0-9]+');
-        $wildcard = new Wildcard('id', $match);
+        $regex = new VariableRegex('[0-9]+');
+        $variable = new Variable('id', $regex);
         $description = 'Test';
-        $schema = new WildcardSchema($wildcard, $description);
+        $schema = new VariableSchema($variable, $description);
         $this->assertSame([
             'required' => true,
             'type' => 'string',
             'description' => $description,
-            'regex' => $wildcard->match()->anchored(),
+            'regex' => $variable->regex()->noDelimiters(),
         ], $schema->toArray());
     }
 }

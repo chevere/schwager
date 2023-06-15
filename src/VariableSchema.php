@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use Chevere\Router\Interfaces\WildcardInterface;
+use Chevere\Router\Interfaces\VariableInterface;
 
-final class WildcardSchema implements ToArrayInterface
+final class VariableSchema implements ToArrayInterface
 {
     public function __construct(
-        private WildcardInterface $wildcard,
+        private VariableInterface $variable,
         private string $description,
     ) {
     }
@@ -34,7 +34,7 @@ final class WildcardSchema implements ToArrayInterface
         ] + [
             'type' => 'string',
             'description' => $this->description,
-            'regex' => $this->wildcard->match()->anchored(),
+            'regex' => $this->variable->regex()->noDelimiters(),
         ];
     }
 }
