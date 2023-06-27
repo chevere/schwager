@@ -13,7 +13,7 @@
     ],
     "require": {
         "chevere/chevere": "^3.0",
-        "chevere/http": "^0.1",
+        "chevere/http": "^0.2.x-dev",
         "chevere/router": "^0.4.x-dev"
     },
     "require-dev": {
