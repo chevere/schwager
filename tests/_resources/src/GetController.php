@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\_resources\src;
 
-use Chevere\Attribute\StringRegex;
+use Chevere\Attributes\Description;
+use Chevere\Attributes\Regex;
 use Chevere\Http\Attributes\Header;
 use Chevere\Http\Attributes\Status;
 use Chevere\Http\Controller;
@@ -55,9 +56,11 @@ class GetController extends Controller
     }
 
     public function run(
-        #[StringRegex('/^[0-9]+$/', 'The user integer id')]
+        #[Description('The user integer id')]
+        #[Regex('/^[0-9]+$/')]
         string $id,
-        #[StringRegex('/^[\w]+$/', 'The user name')]
+        #[Description('The user name')]
+        #[Regex('/^[\w]+$/')]
         string $name
     ): array {
         return [

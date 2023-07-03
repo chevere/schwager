@@ -15,6 +15,9 @@ namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
 use Chevere\Http\Methods\PutMethod;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+
+use function Chevere\Parameter\methodParameters;
 use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use function Chevere\Router\route;
@@ -38,6 +41,7 @@ final class RouteSchemaTest extends TestCase
             new PutMethod(),
             bind(PutController::class)
         );
+        /** @var ParametersInterface */
         $parameters = $getEndpoint->bind()->controllerName()->__toString()::getParameters();
         $route = $route
             ->withEndpoint($putEndpoint)
