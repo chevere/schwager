@@ -16,7 +16,7 @@ namespace Chevere\Schwager;
 use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
 use Chevere\Router\Interfaces\RouteInterface;
-use function Chevere\Parameter\methodParameters;
+use function Chevere\Action\getParameters;
 use function Chevere\Parameter\string;
 
 final class RouteSchema implements ToArrayInterface
@@ -74,9 +74,8 @@ final class RouteSchema implements ToArrayInterface
     {
         $array = [];
         foreach ($route->path()->variables() as $name => $variable) {
-            $parameters = methodParameters(
+            $parameters = getParameters(
                 $this->firstEndpoint->bind()->controllerName()->__toString(),
-                'run'
             );
             $description = $parameters->get($name)->description();
             $schema = new VariableSchema($variable, $description);

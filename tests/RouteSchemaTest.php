@@ -22,7 +22,7 @@ use Chevere\Schwager\VariableSchema;
 use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\PutController;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Parameter\methodParameters;
+use function Chevere\Action\getParameters;
 use function Chevere\Router\bind;
 use function Chevere\Router\route;
 
@@ -39,9 +39,8 @@ final class RouteSchemaTest extends TestCase
             new PutMethod(),
             bind(PutController::class)
         );
-        $parameters = methodParameters(
+        $parameters = getParameters(
             $getEndpoint->bind()->controllerName()->__toString(),
-            'run'
         );
         $route = $route
             ->withEndpoint($putEndpoint)
