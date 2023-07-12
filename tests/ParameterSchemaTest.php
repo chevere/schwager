@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests;
 
-use function Chevere\Parameter\integer;
 use Chevere\Schwager\ParameterSchema;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\integer;
 
 final class ParameterSchemaTest extends TestCase
 {

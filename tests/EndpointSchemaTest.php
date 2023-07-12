@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests;
 
-use function Chevere\Http\classStatus;
 use Chevere\Http\Methods\GetMethod;
 use Chevere\Http\MiddlewareName;
 use Chevere\Http\Middlewares;
-use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Schwager\MiddlewareSchema;
-use Chevere\Tests\_resources\src\GetController;
-use Chevere\Tests\_resources\src\MiddlewareOne;
+use Chevere\Tests\src\GetController;
+use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Http\classStatus;
+use function Chevere\Router\bind;
 
 final class EndpointSchemaTest extends TestCase
 {

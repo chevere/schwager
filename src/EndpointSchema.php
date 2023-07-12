@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use function Chevere\Http\classHeaders;
-use function Chevere\Http\classStatus;
 use Chevere\Http\Interfaces\ControllerInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use function Chevere\Parameter\string;
 use Chevere\Router\Interfaces\EndpointInterface;
+use function Chevere\Http\classHeaders;
+use function Chevere\Http\classStatus;
+use function Chevere\Parameter\string;
 
 final class EndpointSchema implements ToArrayInterface
 {

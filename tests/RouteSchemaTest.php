@@ -15,18 +15,16 @@ namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
 use Chevere\Http\Methods\PutMethod;
-use Chevere\Parameter\Interfaces\ParametersInterface;
-
-use function Chevere\Parameter\methodParameters;
-use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
-use function Chevere\Router\route;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Schwager\RouteSchema;
 use Chevere\Schwager\VariableSchema;
-use Chevere\Tests\_resources\src\GetController;
-use Chevere\Tests\_resources\src\PutController;
+use Chevere\Tests\src\GetController;
+use Chevere\Tests\src\PutController;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\methodParameters;
+use function Chevere\Router\bind;
+use function Chevere\Router\route;
 
 final class RouteSchemaTest extends TestCase
 {
@@ -41,8 +39,10 @@ final class RouteSchemaTest extends TestCase
             new PutMethod(),
             bind(PutController::class)
         );
-        /** @var ParametersInterface */
-        $parameters = $getEndpoint->bind()->controllerName()->__toString()::getParameters();
+        $parameters = methodParameters(
+            $getEndpoint->bind()->controllerName()->__toString(),
+            'run'
+        );
         $route = $route
             ->withEndpoint($putEndpoint)
             ->withEndpoint($getEndpoint);

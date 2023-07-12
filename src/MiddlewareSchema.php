@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use function Chevere\Http\classHeaders;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
+use function Chevere\Http\classHeaders;
 
 final class MiddlewareSchema implements ToArrayInterface
 {

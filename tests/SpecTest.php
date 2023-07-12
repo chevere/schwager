@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
-use function Chevere\Router\bind;
 use Chevere\Router\Endpoint;
-use function Chevere\Router\route;
-use function Chevere\Router\router;
-use function Chevere\Router\routes;
 use Chevere\Schwager\DocumentSchema;
 use Chevere\Schwager\ServerSchema;
 use Chevere\Schwager\Spec;
-use Chevere\Tests\_resources\src\GetController;
+use Chevere\Tests\src\GetController;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Router\bind;
+use function Chevere\Router\route;
+use function Chevere\Router\router;
+use function Chevere\Router\routes;
 
 final class SpecTest extends TestCase
 {

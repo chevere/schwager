@@ -15,7 +15,7 @@ namespace Chevere\Tests;
 
 use Chevere\Http\MiddlewareName;
 use Chevere\Schwager\MiddlewareSchema;
-use Chevere\Tests\_resources\src\MiddlewareOne;
+use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareSchemaTest extends TestCase

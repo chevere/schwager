@@ -11,20 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\_resources\src;
+namespace Chevere\Tests\src;
 
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
 use Chevere\Http\Attributes\Header;
 use Chevere\Http\Attributes\Status;
 use Chevere\Http\Controller;
+use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\float;
 use function Chevere\Parameter\integer;
-use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 

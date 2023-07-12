@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\_resources\src;
+namespace Chevere\Tests\src;
 
-use Chevere\Http\Attributes\Status;
-
-#[Status(401)]
-class MiddlewareOne extends Middleware
+class MiddlewareTwo extends Middleware
 {
+    public static function statusError(): int
+    {
+        return 402;
+    }
 }
