@@ -55,7 +55,7 @@ final class Spec implements ToArrayInterface
         foreach ($server as $schema) {
             $array[] = $schema->toArray();
         }
-        // @phpstan-ignore-next-line
+
         return $array;
     }
 

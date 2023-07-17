@@ -17,7 +17,6 @@ use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
 use Chevere\Router\Interfaces\RouteInterface;
 use function Chevere\Action\getParameters;
-use function Chevere\Parameter\string;
 
 final class RouteSchema implements ToArrayInterface
 {
