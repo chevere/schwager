@@ -40,20 +40,23 @@ final class EndpointSchemaTest extends TestCase
         $schema = new EndpointSchema($endpoint);
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
         $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
-        $response = [];
+        $responses = [];
         $middlewareSchema = new MiddlewareSchema($middlewareName);
-        $response[$middlewareStatus->primary][] = $middlewareSchema->toArray();
-        $response[$controllerStatus->primary][] = [
-            'headers' => [
-                'foo' => 'bar',
-                'esta' => 'wea',
-            ],
+        $responses[$middlewareStatus->primary][] = $middlewareSchema->toArray();
+        $headers = [
+            'foo' => 'bar',
+            'esta' => 'wea',
+        ];
+        $responses[$controllerStatus->primary][] = [
+            'context' => 'GetController',
+            'headers' => $headers,
             'body' => $controllerName::acceptResponse()->schema(),
         ];
-        $response[403][] = [
+        $responses[403][] = [
             'context' => 'GetController',
+            'headers' => $headers,
         ];
-        ksort($response);
+        ksort($responses);
         $this->assertSame([
             'description' => $endpoint->description(),
             'query' => [
@@ -65,7 +68,7 @@ final class EndpointSchemaTest extends TestCase
                 ] + $time,
             ],
             'body' => $controllerName::acceptBody()->schema(),
-            'responses' => $response,
+            'responses' => $responses,
         ], $schema->toArray());
     }
 }
