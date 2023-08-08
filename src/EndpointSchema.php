@@ -19,8 +19,8 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
 use ReflectionClass;
 use function Chevere\Attribute\hasAttribute;
-use function Chevere\Http\classHeaders;
-use function Chevere\Http\classStatus;
+use function Chevere\Http\getHeaders;
+use function Chevere\Http\getStatus;
 use function Chevere\Parameter\string;
 
 final class EndpointSchema implements ToArrayInterface
@@ -49,13 +49,13 @@ final class EndpointSchema implements ToArrayInterface
             if (! $hasStatus) {
                 continue;
             }
-            $status = classStatus($class);
+            $status = getStatus($class);
             $schema = new MiddlewareSchema($middleware);
             $this->responses[$status->primary][] = $schema->toArray();
         }
         $controller = $this->endpoint->bind()->controllerName()->__toString();
-        $headers = classHeaders($controller);
-        $status = classStatus($controller);
+        $headers = getHeaders($controller);
+        $status = getStatus($controller);
         $statuses = $status->toArray();
         $statuses = array_fill_keys($statuses, [
             'context' => $this->getShortName($controller),
