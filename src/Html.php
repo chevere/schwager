@@ -28,10 +28,13 @@ final class Html implements Stringable
     private string $descriptionTemplate;
 
     public function __construct(
-        private Spec $spec
+        private Spec $spec,
+        private array $array = []
     ) {
+        if ($array === []) {
+            $array = $spec->toArray();
+        }
         $this->descriptionTemplate = $this->getTemplate('dtdd.html');
-        $array = $spec->toArray();
         $this->html = $this->getTemplate('main.html');
         $search = [
             '%name%',
@@ -70,8 +73,9 @@ final class Html implements Stringable
         $optionalTemplate = $this->getTemplate('optional.html');
         $paths = '';
         foreach ($array['paths'] as $uri => $path) {
+            $name = $path['name'];
             $variables = '';
-            foreach ($path['variables'] as $name => $variable) {
+            foreach ($path['variables'] ?? [] as $variableName => $variable) {
                 $search = [
                     '%name%',
                     '%type%',
@@ -79,7 +83,7 @@ final class Html implements Stringable
                     '%description%',
                 ];
                 $replace = [
-                    $this->getDtDd('Name', $name),
+                    $this->getDtDd('Name', $variableName),
                     $this->getDtDd('Type', $this->wrap('code', $variable['type'] ?? '')),
                     $this->getDtDd('Regex', $this->wrap('code', $variable['regex'] ?? '')),
                     $this->getDtDd('Description', $variable['description'] ?? ''),
@@ -96,7 +100,7 @@ final class Html implements Stringable
                     '%body%',
                 ];
                 $query = '';
-                foreach ($endpoint['query'] as $name => $el) {
+                foreach ($endpoint['query'] ?? [] as $queryName => $el) {
                     $properties = '';
                     $map = arrayUnsetKey($el, 'required', 'type');
                     foreach ($map as $property => $value) {
@@ -106,14 +110,14 @@ final class Html implements Stringable
                         );
                     }
                     $query .= $this->getDtDd(
-                        $name,
+                        $queryName,
                         $this->wrap('code', $el['type'])
                             . ($el['required'] ? '' : $optionalTemplate)
                             . '<dl class="row m-0 p-0">' . $properties . '</dl>'
                     );
                 }
                 $body = '';
-                foreach ($endpoint['body']['parameters'] ?? [] as $name => $el) {
+                foreach ($endpoint['body']['parameters'] ?? [] as $elName => $el) {
                     $map = arrayUnsetKey($el, 'required', 'type');
                     $properties = '';
                     foreach ($map as $property => $value) {
@@ -126,9 +130,9 @@ final class Html implements Stringable
                         );
                     }
                     $body .= $this->getDtDd(
-                        $name,
+                        $elName,
                         $this->wrap('code', $el['type'])
-                            . ($el['required'] ? '' : $optionalTemplate)
+                            . (($el['required'] ?? true) ? '' : $optionalTemplate)
                             . '<dl class="row m-0 p-0">' . $properties . '</dl>'
                     );
                 }
@@ -137,13 +141,16 @@ final class Html implements Stringable
                     $this->getDtDd('Headers', '__placeholder__'),
                     $this->getDtDd('Query', $this->wrap('code', 'array&lt;string&gt;'))
                     . '<dl class="row m-0 p-0">' . $query . '</dl>',
-                    $this->getDtDd(
+                ];
+
+                if ($body !== '') {
+                    $replace[1] .= $this->getDtDd(
                         'Body',
                         $this->wrap('code', $endpoint['body']['type'])
                         . $this->wrap('div', $endpoint['body']['description'] ?? '')
                     )
-                    . '<dl class="row m-0 p-0">' . $body . '</dl>',
-                ];
+                    . '<dl class="row m-0 p-0">' . $body . '</dl>';
+                }
                 $request = str_replace($search, $replace, $requestTemplate);
 
                 $endpoints .= str_replace('%request.html%', $request, $endpointTemplate);
