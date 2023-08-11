@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="../src/bootstrap/bootstrap.min.css" rel="stylesheet">
+<title>%name%</title>
+<style media="all">
+    :root {
+        /* --bs-code-color: var(--bs-purple); */
+    }
+    .sticky-method {
+        top: 2rem;
+    }
+    .row .fw-normal {
+        text-overflow: ellipsis;
+        overflow: auto;
+    }
+    .row.m-0.p-0 .col-sm-2 {
+        font-weight: normal;
+    }
+    .row.m-0.p-0 .row.m-0.p-0 .col-sm-9 {
+        margin-bottom: 0;
+        font-family: var(--bs-font-monospace);
+        font-size: 0.9rem;
+    }
+</style>
+<style media="print">
+    .sticky-top {
+        position: static !important;
+    }
+    .collapse {
+        display: block !important;
+    }
+</style>
+</head>
+<body class="container-xxl">
+    <div class="d-flex align-items-baseline mb-4">
+        <div>
+            <h1 class="mb-0">%name%</h1>
+        </div>
+        <div>
+            <span class="ms-2 text-muted fs-4">%version%</span>
+        </div>
+    </div>
+    %servers.html%
+    %paths.html%
+    <script src="src/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../src/cssscript/bootstrap-auto-dark-mode.js"></script>
+</body>
+</html>

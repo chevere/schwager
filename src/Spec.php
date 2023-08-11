@@ -24,18 +24,37 @@ final class Spec implements ToArrayInterface
      */
     private array $array;
 
+    /**
+     * @var array<ServerSchema>
+     */
+    private array $servers;
+
     public function __construct(
         private RouterInterface $router,
-        DocumentSchema $document,
+        private DocumentSchema $document,
         ServerSchema ...$server
     ) {
         $this->array = $document->toArray();
+        $this->servers = $server;
         $this->array['servers'] = $this->getServers(...$server);
         foreach ($router->routes() as $id => $route) {
             $this->putPath($id, $route);
         }
         // @phpstan-ignore-next-line
         asort($this->array['paths']);
+    }
+
+    public function document(): DocumentSchema
+    {
+        return $this->document;
+    }
+
+    /**
+     * @return array<ServerSchema>
+     */
+    public function servers(): array
+    {
+        return $this->servers;
     }
 
     /**
