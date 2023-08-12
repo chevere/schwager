@@ -6,9 +6,28 @@
 <link href="../src/bootstrap/bootstrap.min.css" rel="stylesheet">
 <title>%name%</title>
 <style media="all">
-    :root {
-        /* --bs-code-color: var(--bs-purple); */
+    /* :root {
+        --CONNECT: ,
+        --DELETE: ,
+        --GET: ,
+        --HEAD: ,
+        --OPTIONS: ,
+        --PATCH: ,
+        --POST: ,
+        --PUT: ,
+        --TRACE: ,
+    } */
+
+    .text-bg-GET {
+        color: #fff!important;
+        background-color: RGBA(var(--bs-primary-rgb),var(--bs-bg-opacity,1))!important;
     }
+
+    .text-bg-POST {
+        color: #fff!important;
+        background-color: RGBA(var(--bs-success-rgb),var(--bs-bg-opacity,1))!important;
+    }
+
     .sticky-method {
         top: 2rem;
     }
@@ -45,7 +64,7 @@
     </div>
     %servers.html%
     %paths.html%
-    <script src="src/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../src/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="../src/cssscript/bootstrap-auto-dark-mode.js"></script>
 </body>
 </html>

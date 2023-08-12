@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="../src/bootstrap/bootstrap.min.css" rel="stylesheet">
+<title>Chevere API</title>
+<style media="all">
+    /* :root {
+        --CONNECT: ,
+        --DELETE: ,
+        --GET: ,
+        --HEAD: ,
+        --OPTIONS: ,
+        --PATCH: ,
+        --POST: ,
+        --PUT: ,
+        --TRACE: ,
+    } */
+
+    .text-bg-GET {
+        color: #fff!important;
+        background-color: RGBA(var(--bs-primary-rgb),var(--bs-bg-opacity,1))!important;
+    }
+
+    .text-bg-POST {
+        color: #fff!important;
+        background-color: RGBA(var(--bs-success-rgb),var(--bs-bg-opacity,1))!important;
+    }
+
+    .sticky-method {
+        top: 2rem;
+    }
+    .row .fw-normal {
+        text-overflow: ellipsis;
+        overflow: auto;
+    }
+    .row.m-0.p-0 .col-sm-2 {
+        font-weight: normal;
+    }
+    .row.m-0.p-0 .row.m-0.p-0 .col-sm-9 {
+        margin-bottom: 0;
+        font-family: var(--bs-font-monospace);
+        font-size: 0.9rem;
+    }
+</style>
+<style media="print">
+    .sticky-top {
+        position: static !important;
+    }
+    .collapse {
+        display: block !important;
+    }
+</style>
+</head>
+<body class="container-xxl">
+    <div class="d-flex align-items-baseline mb-4">
+        <div>
+            <h1 class="mb-0">Chevere API</h1>
+        </div>
+        <div>
+            <span class="ms-2 text-muted fs-4">1.0.0</span>
+        </div>
+    </div>
+    <div class="mb-4">
+    <h2 class="h2">Servers</h2>
+    <ul class="list-group">
+        <li class="list-group-item bg-info bg-opacity-10 border-info">
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-9">test</dd>
+        <dt class="col-sm-2">URL</dt>
+        <dd class="col-sm-9">testServerUrl</dd>
+    </dl>
+</li>
+<li class="list-group-item bg-info bg-opacity-10 border-info">
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-9">test</dd>
+        <dt class="col-sm-2">URL</dt>
+        <dd class="col-sm-9">productionServerUrl</dd>
+    </dl>
+</li>
+
+    </ul>
+</div>
+
+    <h3 class="sticky-top bg-body pt-1 pb-1 lh-1">/customer/{id}/{name}</h3>
+<dl>
+    <dt>Name</dt>
+    <dd>/customer/{id}/{name}</dd>
+    <dt>Regex</dt>
+    <dd class="font-monospace">^(?|/customer/([^/]+)/([^/]+))$</dd>
+    <dt>Variables</dt>
+<dd>
+    <ul class="list-group mb-2 mt-2">
+        <li class="list-group-item bg-light">
+    <span class="badge fw-normal fs-6 mb-1 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle">id</span>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Type</dt>
+<dd class="col-sm-9"><code>string</code></dd>
+
+        <dt class="col-sm-2">Regex</dt>
+<dd class="col-sm-9"><code>^[^/]+$</code></dd>
+
+        <dt class="col-sm-2">Description</dt>
+<dd class="col-sm-9">The user integer id</dd>
+
+    </dl>
+</li>
+<li class="list-group-item bg-light">
+    <span class="badge fw-normal fs-6 mb-1 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle">name</span>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Type</dt>
+<dd class="col-sm-9"><code>string</code></dd>
+
+        <dt class="col-sm-2">Regex</dt>
+<dd class="col-sm-9"><code>^[^/]+$</code></dd>
+
+        <dt class="col-sm-2">Description</dt>
+<dd class="col-sm-9">The user name</dd>
+
+    </dl>
+</li>
+
+    </ul>
+</dd>
+
+</dl>
+<strong>Endpoints</strong>
+<ul class="list-group mb-2 mt-2">
+    <li class="list-group-item">
+    <div class="sticky-method d-flex align-items-baseline mb-0 sticky-top bg-body z-1 pt-2 pb-2" data-bs-toggle="collapse" data-bs-target=".GET-3fee126f4b5cc973f5279390b200096a" aria-expanded="false" aria-controls="GET-3fee126f4b5cc973f5279390b200096a">
+        <div class="me-auto">
+            <h4 class="h5 mb-0">Transfer a current representation of the target resource.</h4>
+        </div>
+        <div>
+            <span class="badge text-bg-GET fs-6">GET</span>
+        </div>
+    </div>
+    <dl class="GET-3fee126f4b5cc973f5279390b200096a mt-2 collapse--">
+    <dt>Request</dt>
+    <dd>
+        <div class="list-group mb-2 mt-2">
+            <div class="list-group-item bg-light">
+                <dl class="row mb-0">
+                    <dt class="col-sm-2">Headers</dt>
+<dd class="col-sm-9">__placeholder__</dd>
+
+                    <dt class="col-sm-2">Query</dt>
+<dd class="col-sm-9"><code>array&lt;string&gt;</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">date</dt>
+<dd class="col-sm-9"><code>string</code><dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">YYYY-MM-DD</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$</dd>
+</dl></dd>
+<dt class="col-sm-2">time</dt>
+<dd class="col-sm-9"><code>string</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">hh:mm:ss</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{2,3}:[0-5][0-9]:[0-5][0-9]$</dd>
+</dl></dd>
+</dl><dt class="col-sm-2">Body</dt>
+<dd class="col-sm-9"><code>array#map</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">rate</dt>
+<dd class="col-sm-9"><code>float</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>16.5</div></dd>
+</dl></dd>
+<dt class="col-sm-2">hours</dt>
+<dd class="col-sm-9"><code>integer</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>1</div></dd>
+<dt class="col-sm-2">maximum</dt>
+<dd class="col-sm-9"><div>8</div></dd>
+</dl></dd>
+</dl>
+                    
+                </dl>
+            </div>
+        </div>
+    </dd>
+</dl>
+
+    %response.html%
+</li>
+
+</ul>
+
+<h3 class="sticky-top bg-body pt-1 pb-1 lh-1">/user/{id}/{name}</h3>
+<dl>
+    <dt>Name</dt>
+    <dd>/user/{id}/{name}</dd>
+    <dt>Regex</dt>
+    <dd class="font-monospace">^(?|/user/([^/]+)/([^/]+))$</dd>
+    <dt>Variables</dt>
+<dd>
+    <ul class="list-group mb-2 mt-2">
+        <li class="list-group-item bg-light">
+    <span class="badge fw-normal fs-6 mb-1 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle">id</span>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Type</dt>
+<dd class="col-sm-9"><code>string</code></dd>
+
+        <dt class="col-sm-2">Regex</dt>
+<dd class="col-sm-9"><code>^[^/]+$</code></dd>
+
+        <dt class="col-sm-2">Description</dt>
+<dd class="col-sm-9">The user integer id</dd>
+
+    </dl>
+</li>
+<li class="list-group-item bg-light">
+    <span class="badge fw-normal fs-6 mb-1 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle">name</span>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-2">Type</dt>
+<dd class="col-sm-9"><code>string</code></dd>
+
+        <dt class="col-sm-2">Regex</dt>
+<dd class="col-sm-9"><code>^[^/]+$</code></dd>
+
+        <dt class="col-sm-2">Description</dt>
+<dd class="col-sm-9">The user name</dd>
+
+    </dl>
+</li>
+
+    </ul>
+</dd>
+
+</dl>
+<strong>Endpoints</strong>
+<ul class="list-group mb-2 mt-2">
+    <li class="list-group-item">
+    <div class="sticky-method d-flex align-items-baseline mb-0 sticky-top bg-body z-1 pt-2 pb-2" data-bs-toggle="collapse" data-bs-target=".GET-dac1c0cee1c99f3913a79865a72099b4" aria-expanded="false" aria-controls="GET-dac1c0cee1c99f3913a79865a72099b4">
+        <div class="me-auto">
+            <h4 class="h5 mb-0">Transfer a current representation of the target resource.</h4>
+        </div>
+        <div>
+            <span class="badge text-bg-GET fs-6">GET</span>
+        </div>
+    </div>
+    <dl class="GET-dac1c0cee1c99f3913a79865a72099b4 mt-2 collapse--">
+    <dt>Request</dt>
+    <dd>
+        <div class="list-group mb-2 mt-2">
+            <div class="list-group-item bg-light">
+                <dl class="row mb-0">
+                    <dt class="col-sm-2">Headers</dt>
+<dd class="col-sm-9">__placeholder__</dd>
+
+                    <dt class="col-sm-2">Query</dt>
+<dd class="col-sm-9"><code>array&lt;string&gt;</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">date</dt>
+<dd class="col-sm-9"><code>string</code><dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">YYYY-MM-DD</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$</dd>
+</dl></dd>
+<dt class="col-sm-2">time</dt>
+<dd class="col-sm-9"><code>string</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">hh:mm:ss</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{2,3}:[0-5][0-9]:[0-5][0-9]$</dd>
+</dl></dd>
+</dl><dt class="col-sm-2">Body</dt>
+<dd class="col-sm-9"><code>array#map</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">rate</dt>
+<dd class="col-sm-9"><code>float</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>16.5</div></dd>
+</dl></dd>
+<dt class="col-sm-2">hours</dt>
+<dd class="col-sm-9"><code>integer</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>1</div></dd>
+<dt class="col-sm-2">maximum</dt>
+<dd class="col-sm-9"><div>8</div></dd>
+</dl></dd>
+</dl>
+                    
+                </dl>
+            </div>
+        </div>
+    </dd>
+</dl>
+
+    %response.html%
+</li>
+<li class="list-group-item">
+    <div class="sticky-method d-flex align-items-baseline mb-0 sticky-top bg-body z-1 pt-2 pb-2" data-bs-toggle="collapse" data-bs-target=".POST-dfa62aea114df6cf282496ccadb181b5" aria-expanded="false" aria-controls="POST-dfa62aea114df6cf282496ccadb181b5">
+        <div class="me-auto">
+            <h4 class="h5 mb-0">Perform resource-specific processing on the request payload.</h4>
+        </div>
+        <div>
+            <span class="badge text-bg-POST fs-6">POST</span>
+        </div>
+    </div>
+    <dl class="POST-dfa62aea114df6cf282496ccadb181b5 mt-2 collapse--">
+    <dt>Request</dt>
+    <dd>
+        <div class="list-group mb-2 mt-2">
+            <div class="list-group-item bg-light">
+                <dl class="row mb-0">
+                    <dt class="col-sm-2">Headers</dt>
+<dd class="col-sm-9">__placeholder__</dd>
+
+                    <dt class="col-sm-2">Query</dt>
+<dd class="col-sm-9"><code>array&lt;string&gt;</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">date</dt>
+<dd class="col-sm-9"><code>string</code><dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">YYYY-MM-DD</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$</dd>
+</dl></dd>
+<dt class="col-sm-2">time</dt>
+<dd class="col-sm-9"><code>string</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">description</dt>
+<dd class="col-sm-9">hh:mm:ss</dd>
+<dt class="col-sm-2">regex</dt>
+<dd class="col-sm-9">^\d{2,3}:[0-5][0-9]:[0-5][0-9]$</dd>
+</dl></dd>
+</dl><dt class="col-sm-2">Body</dt>
+<dd class="col-sm-9"><code>array#map</code></dd>
+<dl class="row m-0 p-0"><dt class="col-sm-2">rate</dt>
+<dd class="col-sm-9"><code>float</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>16.5</div></dd>
+</dl></dd>
+<dt class="col-sm-2">hours</dt>
+<dd class="col-sm-9"><code>integer</code><small class="ms-1 px-1 badge fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle">optional</small>
+<dl class="row m-0 p-0"><dt class="col-sm-2">minimum</dt>
+<dd class="col-sm-9"><div>1</div></dd>
+<dt class="col-sm-2">maximum</dt>
+<dd class="col-sm-9"><div>8</div></dd>
+</dl></dd>
+</dl>
+                    
+                </dl>
+            </div>
+        </div>
+    </dd>
+</dl>
+
+    %response.html%
+</li>
+
+</ul>
+
+
+    <script src="../src/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../src/cssscript/bootstrap-auto-dark-mode.js"></script>
+</body>
+</html>

@@ -25,30 +25,35 @@ final class Html implements Stringable
 
     private string $html;
 
-    private string $descriptionTemplate;
+    private string $descriptionHtml;
+
+    private string $pathHtml;
+
+    private string $variableHtml;
+
+    private string $variableNameHtml;
+
+    private string $variablesHtml;
+
+    private string $requestHtml;
+
+    private string $endpointHtml;
+
+    private string $endpointsHtml;
+
+    private string $optionalHtml;
+
+    private string $serverHtml;
+
+    private string $serversHtml;
 
     public function __construct(
         private Spec $spec,
         private array $array = []
     ) {
-        if ($array === []) {
-            $array = $spec->toArray();
-        }
-        $this->descriptionTemplate = $this->getTemplate('dtdd.html');
-        $this->html = $this->getTemplate('main.html');
-        $search = [
-            '%name%',
-            '%version%',
-        ];
-        $replace = [
-            $spec->document()->name,
-            $spec->document()->version,
-        ];
-        $this->html = str_replace($search, $replace, $this->html);
-
-        $serverTemplate = $this->getTemplate('server.html');
+        $this->loadTemplates();
         $servers = '';
-        foreach ($spec->servers() as $server) {
+        foreach ($this->spec->servers() as $server) {
             $search = [
                 '%url%',
                 '%description%',
@@ -57,22 +62,14 @@ final class Html implements Stringable
                 $server->url,
                 $server->description,
             ];
-            $servers .= str_replace($search, $replace, $serverTemplate);
+            $servers .= str_replace($search, $replace, $this->serverHtml);
         }
 
-        $serversTemplate = $this->getTemplate('servers.html');
-        $servers = str_replace('%servers%', $servers, $serversTemplate);
+        $servers = str_replace('%servers%', $servers, $this->serversHtml);
         $this->html = str_replace('%servers.html%', $servers, $this->html);
 
-        $pathTemplate = $this->getTemplate('path.html');
-        $variableTemplate = $this->getTemplate('variable.html');
-        $variablesTemplate = $this->getTemplate('variables.html');
-        $requestTemplate = $this->getTemplate('request.html');
-        $endpointTemplate = $this->getTemplate('endpoint.html');
-        $endpointsTemplate = $this->getTemplate('endpoints.html');
-        $optionalTemplate = $this->getTemplate('optional.html');
         $paths = '';
-        foreach ($array['paths'] as $uri => $path) {
+        foreach ($this->array['paths'] as $uri => $path) {
             $name = $path['name'];
             $variables = '';
             foreach ($path['variables'] ?? [] as $variableName => $variable) {
@@ -83,14 +80,14 @@ final class Html implements Stringable
                     '%description%',
                 ];
                 $replace = [
-                    $this->getDtDd('Name', $variableName),
-                    $this->getDtDd('Type', $this->wrap('code', $variable['type'] ?? '')),
-                    $this->getDtDd('Regex', $this->wrap('code', $variable['regex'] ?? '')),
-                    $this->getDtDd('Description', $variable['description'] ?? ''),
+                    str_replace('%name%', $variableName, $this->variableNameHtml),
+                    $this->description('Type', $this->code($variable['type'] ?? '')),
+                    $this->description('Regex', $this->code($variable['regex'] ?? '')),
+                    $this->description('Description', $variable['description'] ?? ''),
                 ];
-                $variables .= str_replace($search, $replace, $variableTemplate);
+                $variables .= str_replace($search, $replace, $this->variableHtml);
             }
-            $variables = str_replace('%variables%', $variables, $variablesTemplate);
+            $variables = str_replace('%variables%', $variables, $this->variablesHtml);
 
             $endpoints = '';
             foreach ($path['endpoints'] as $method => $endpoint) {
@@ -104,15 +101,15 @@ final class Html implements Stringable
                     $properties = '';
                     $map = arrayUnsetKey($el, 'required', 'type');
                     foreach ($map as $property => $value) {
-                        $properties .= $this->getDtDd(
+                        $properties .= $this->description(
                             $property,
                             (string) ($value ?? '')
                         );
                     }
-                    $query .= $this->getDtDd(
+                    $query .= $this->description(
                         $queryName,
-                        $this->wrap('code', $el['type'])
-                            . ($el['required'] ? '' : $optionalTemplate)
+                        $this->code($el['type'])
+                            . ($el['required'] ? '' : $this->optionalHtml)
                             . '<dl class="row m-0 p-0">' . $properties . '</dl>'
                     );
                 }
@@ -124,36 +121,36 @@ final class Html implements Stringable
                         if (! is_scalar($value)) {
                             continue;
                         }
-                        $properties .= $this->getDtDd(
+                        $properties .= $this->description(
                             $property,
-                            $this->wrap('div', (string) ($value ?? ''))
+                            $this->div((string) ($value ?? ''))
                         );
                     }
-                    $body .= $this->getDtDd(
+                    $body .= $this->description(
                         $elName,
-                        $this->wrap('code', $el['type'])
-                            . (($el['required'] ?? true) ? '' : $optionalTemplate)
+                        $this->code($el['type'])
+                            . (($el['required'] ?? true) ? '' : $this->optionalHtml)
                             . '<dl class="row m-0 p-0">' . $properties . '</dl>'
                     );
                 }
 
                 $replace = [
-                    $this->getDtDd('Headers', '__placeholder__'),
-                    $this->getDtDd('Query', $this->wrap('code', 'array&lt;string&gt;'))
+                    $this->description('Headers', '__placeholder__'),
+                    $this->description('Query', $this->code('array&lt;string&gt;'))
                     . '<dl class="row m-0 p-0">' . $query . '</dl>',
                 ];
 
                 if ($body !== '') {
-                    $replace[1] .= $this->getDtDd(
+                    $replace[1] .= $this->description(
                         'Body',
-                        $this->wrap('code', $endpoint['body']['type'])
-                        . $this->wrap('div', $endpoint['body']['description'] ?? '')
+                        $this->code($endpoint['body']['type'])
+                        . $this->div($endpoint['body']['description'] ?? '')
                     )
                     . '<dl class="row m-0 p-0">' . $body . '</dl>';
                 }
-                $request = str_replace($search, $replace, $requestTemplate);
+                $request = str_replace($search, $replace, $this->requestHtml);
 
-                $endpoints .= str_replace('%request.html%', $request, $endpointTemplate);
+                $endpoints .= str_replace('%request.html%', $request, $this->endpointHtml);
                 $replace = [
                     '%method%' => $method,
                     '%md5%' => md5($name . $method),
@@ -162,7 +159,7 @@ final class Html implements Stringable
                 $endpoints = strtr($endpoints, $replace);
             }
 
-            $endpoints = str_replace('%endpoints%', $endpoints, $endpointsTemplate);
+            $endpoints = str_replace('%endpoints%', $endpoints, $this->endpointsHtml);
 
             ////////////////////////////////
 
@@ -180,7 +177,7 @@ final class Html implements Stringable
                 $variables,
                 $endpoints,
             ];
-            $paths .= str_replace($search, $replace, $pathTemplate);
+            $paths .= str_replace($search, $replace, $this->pathHtml);
         }
 
         $this->html = str_replace('%paths.html%', $paths, $this->html);
@@ -191,7 +188,22 @@ final class Html implements Stringable
         return $this->html;
     }
 
-    private function getDtDd(string $title, string $description): string
+    public function div(string $content, string $class = ''): string
+    {
+        return $this->tag('div', $class, $content);
+    }
+
+    public function code(string $content, string $class = ''): string
+    {
+        return $this->tag('code', $class, $content);
+    }
+
+    public function getTemplate(string $name): string
+    {
+        return file_get_contents(self::TEMPLATES_DIR . $name);
+    }
+
+    public function description(string $title, string $description): string
     {
         if ($description === '') {
             return '';
@@ -206,22 +218,52 @@ final class Html implements Stringable
                 $title,
                 $description,
             ],
-            $this->descriptionTemplate
+            $this->descriptionHtml
         );
     }
 
-    private function wrap(string $tag, string $content): string
+    private function loadTemplates(): void
     {
+        if ($this->array === []) {
+            $this->array = $this->spec->toArray();
+        }
+        $this->html = $this->getTemplate('main.html');
+        $search = [
+            '%name%',
+            '%version%',
+        ];
+        $replace = [
+            $this->spec->document()->name,
+            $this->spec->document()->version,
+        ];
+        $this->html = str_replace($search, $replace, $this->html);
+        $this->descriptionHtml = $this->getTemplate('description.html');
+        $this->pathHtml = $this->getTemplate('path.html');
+        $this->variableHtml = $this->getTemplate('variable.html');
+        $this->variableNameHtml = $this->getTemplate('variable-name.html');
+        $this->variablesHtml = $this->getTemplate('variables.html');
+        $this->requestHtml = $this->getTemplate('request.html');
+        $this->endpointHtml = $this->getTemplate('endpoint.html');
+        $this->endpointsHtml = $this->getTemplate('endpoints.html');
+        $this->optionalHtml = $this->getTemplate('optional.html');
+        $this->serverHtml = $this->getTemplate('server.html');
+        $this->serversHtml = $this->getTemplate('servers.html');
+    }
+
+    private function tag(string $tag, string $class, string $content): string
+    {
+        $attribute = match ($class) {
+            '' => '',
+            default => <<<HTML
+             class="{$class}"
+            HTML
+        };
+
         return match ($content) {
             '' => '',
             default => <<<HTML
-            <{$tag}>{$content}</{$tag}>
+            <{$tag}{$attribute}>{$content}</{$tag}>
             HTML,
         };
-    }
-
-    private function getTemplate(string $name): string
-    {
-        return file_get_contents(self::TEMPLATES_DIR . $name);
     }
 }

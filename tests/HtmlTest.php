@@ -59,9 +59,10 @@ final class HtmlTest extends TestCase
         $productionServer = new ServerSchema('productionServerUrl', 'test');
         $spec = new Spec($router, $document, $testServer, $productionServer);
         $html = new Html($spec);
-        // vdd($html->__toString());
+        $this->expectNotToPerformAssertions();
         // $file = fileForPath(__DIR__ . '/HtmlTest.html');
         // $file->createIfNotExists();
         // $file->put($html->__toString());
+        // vdd($html->__toString());
     }
 }
