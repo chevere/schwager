@@ -45,6 +45,10 @@ class GetController extends Controller
     public static function acceptBody(): ArrayTypeParameterInterface
     {
         return arrayp()->withOptional(
+            arreglo: arrayp(
+                string: string(),
+                integer: integer(),
+            ),
             rate: float(minimum: 16.5),
             hours: integer(minimum: 1, maximum: 8),
         );

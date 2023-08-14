@@ -211,12 +211,12 @@ final class Html implements Stringable
                 $described = $this->body($value, $indent);
                 $return .= $this->descriptionList(
                     $this->description(
-                        $property,
+                        $this->indent($indent - 1, $property),
                         $this->code($value['type'])
                         . ($required ? '' : $this->optionalHtml)
-                        . $described
                     )
                 );
+                $return .= $described;
             }
 
             return $return;
