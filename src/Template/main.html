@@ -8,24 +8,71 @@
 <style media="all">
     /* :root {
         --CONNECT: ,
-        --DELETE: ,
-        --GET: ,
-        --HEAD: ,
         --OPTIONS: ,
-        --PATCH: ,
-        --POST: ,
-        --PUT: ,
         --TRACE: ,
     } */
 
-    .text-bg-GET {
-        color: #fff!important;
-        background-color: RGBA(var(--bs-primary-rgb),var(--bs-bg-opacity,1))!important;
+    :root
+    {
+        --bg-GET: #f5fbff;
+        --text-GET: #025fd7;
+        --border-GET: #025fd94d;
+        --bg-DELETE: #fdf2f1;
+        --text-DELETE: #bf0e08;
+        --border-DELETE: #bf0e084d;
+        --bg-POST: #f4faf8;
+        --text-POST: #008a64;
+        --border-POST: #008a634d;
+        --bg-PATCH: #fef4e8;
+        --text-PATCH: #df9136;
+        --border-PATCH: #df8f344d;
+        --bg-OPTIONS: #f4f0f6;
+        --text-OPTIONS: #800080;
+        --border-OPTIONS: #80007f4d;
+    }
+    :root[data-bs-theme="dark"] {
+        --bg-GET: #111c28;
+        --bg-DELETE: #241314;
+        --bg-POST: #11201d;
+        --bg-PATCH: #272018;
+        --bg-OPTIONS: var(--darkest-purple);
     }
 
-    .text-bg-POST {
-        color: #fff!important;
-        background-color: RGBA(var(--bs-success-rgb),var(--bs-bg-opacity,1))!important;
+    .http-method {
+        border-style: solid;
+        border-width: 1px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .http-method.method-DELETE {
+        background: var(--bg-DELETE);
+        border-color: var(--border-DELETE);
+        color: var(--text-DELETE);
+    }
+    .http-method.method-GET,
+    .http-method.method-HEAD {
+        background: var(--bg-GET);
+        border-color: var(--border-GET);
+        color: var(--text-GET);
+    }
+
+    .http-method.method-POST {
+        background: var(--bg-POST);
+        border-color: var(--border-POST);
+        color: var(--text-POST);
+    }
+    .http-method.method-PATCH,
+    .http-method.method-PUT {
+        background: var(--bg-PATCH);
+        border-color: var(--border-PATCH);
+        color: var(--text-PATCH);
+    }
+    .http-method.method-OPTIONS,
+    .http-method.method-CONNECT,
+    .http-method.method-TRACE {
+        background: var(--bg-OPTIONS);
+        border-color: var(--border-OPTIONS);
+        color: var(--text-OPTIONS);
     }
 
     .sticky-method {
@@ -37,11 +84,12 @@
     }
     .row.m-0.p-0 .col-sm-2 {
         font-weight: normal;
+        text-align: left;
     }
-    .row.m-0.p-0 .row.m-0.p-0 .col-sm-9 {
+    .row.m-0.p-0 .row.m-0.p-0 .col-sm-10 {
         margin-bottom: 0;
+        font-size: .875em;
         font-family: var(--bs-font-monospace);
-        font-size: 0.9rem;
     }
 </style>
 <style media="print">
