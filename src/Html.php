@@ -185,30 +185,73 @@ final class Html implements Stringable
         return $return;
     }
 
-    public function body(array $parameters): string
+    public function type(array $schema): string
     {
-        $body = '';
-        foreach ($parameters as $name => $parameter) {
-            $map = arrayUnsetKey($parameter, 'required', 'type');
-            $properties = '';
-            foreach ($map as $property => $value) {
-                if (! is_scalar($value)) {
-                    continue;
-                }
-                $properties .= $this->description(
-                    $property,
-                    $this->div((string) ($value ?? ''))
+        return <<<HTML
+        <div><code>{$schema['type']}</code></div>
+        HTML;
+    }
+
+    public function indent(int $count, string $string): string
+    {
+        return str_repeat('&nbsp;', $count) . $string;
+    }
+
+    public function body(array $body, int $indent = -1): string
+    {
+        $indent++;
+        $type = $body['type'] ?? '';
+        if (is_array($type)) {
+            $type = '';
+        }
+        $return = '';
+        if ($type === '') {
+            foreach ($body as $property => $value) {
+                $required = $value['required'] ?? true;
+                $described = $this->body($value, $indent);
+                $return .= $this->descriptionList(
+                    $this->description(
+                        $property,
+                        $this->code($value['type'])
+                        . ($required ? '' : $this->optionalHtml)
+                        . $described
+                    )
                 );
             }
-            $body .= $this->description(
-                $name,
-                $this->code($parameter['type'])
-                    . (($parameter['required'] ?? true) ? '' : $this->optionalHtml)
-                    . $this->descriptionList($properties)
-            );
+
+            return $return;
+        }
+        $parameters = $body['parameters'] ?? [];
+        if ($type === 'union') {
+            foreach ($parameters as $pos => $param) {
+                $return .= $this->description(
+                    $this->indent($indent, (string) $pos),
+                    $this->code($param['type'])
+                    . $this->body($param, $indent)
+                );
+            }
+
+            return $return;
+        }
+        if ($type === 'generic') {
+            foreach ($parameters as $name => $parameter) {
+                $return .= $this->descriptionList(
+                    $this->description(
+                        $this->indent($indent, $name),
+                        $this->code($parameter['type'])
+                        . $this->body($parameter, $indent)
+                    )
+                );
+            }
+
+            return $return;
         }
 
-        return $body;
+        if (str_starts_with($type, 'array')) {
+            return $this->body($parameters, $indent);
+        }
+
+        return $return;
     }
 
     public function request(array $endpoint): string
@@ -218,52 +261,34 @@ final class Html implements Stringable
             '%query%',
             '%body%',
         ];
-        $query = $this->query($endpoint['query'] ?? []);
-        $body = $this->body($endpoint['body']['parameters'] ?? []);
         $headers = $this->headers($endpoint['request']['headers'] ?? []);
         $replace = [
             $this->description('Headers', $headers),
-            $this->description('Query', $this->code('array&lt;string&gt;'))
-            . $this->descriptionList($query),
+            '',
             '',
         ];
+        $query = $this->query($endpoint['query'] ?? []);
+        if ($query !== '') {
+            $replace[1] = $this->description(
+                'Query',
+                $this->code('array&lt;string&gt;')
+            )
+            . $this->descriptionList($query);
+        }
+        $body = $this->body($endpoint['body'] ?? []);
         if ($body !== '') {
-            $replace[2] .= $this->description(
+            $replace[2] = $this->description(
                 'Body',
-                $this->code($endpoint['body']['type'])
-                . $this->div($endpoint['body']['description'] ?? '')
+                $this->code($endpoint['body']['type'] ?? '')
+                    . $this->div(
+                        $endpoint['body']['description'] ?? ''
+                    )
             )
             . $this->descriptionList($body);
         }
 
         return str_replace($search, $replace, $this->requestHtml);
     }
-
-    // public function response(array $endpoint): string
-    // {
-    //     $search = [
-    //         '%headers%',
-    //         '%query%',
-    //         '%body%',
-    //     ];
-    //     $body = $this->body($endpoint['body']['parameters'] ?? []);
-    //     $replace = [
-    //         $this->description('Headers', '__placeholder__'),
-    //         $this->description('Query', $this->code('array&lt;string&gt;'))
-    //         . $this->descriptionList($query ?? ''),
-    //     ];
-
-    //     if ($body !== '') {
-    //         $replace[] .= $this->description(
-    //             'Body',
-    //             $this->code($endpoint['body']['type'])
-    //             . $this->div($endpoint['body']['description'] ?? '')
-    //         )
-    //         . $this->descriptionList($body);
-    //     }
-
-    //     return str_replace($search, $replace, $this->responseHtml);
-    // }
 
     public function headers(array $headers): string
     {
@@ -287,17 +312,17 @@ final class Html implements Stringable
                 '%body%',
             ];
             foreach ($el as $response) {
-                $body = $this->body($response['body']['parameters'] ?? []);
+                $body = $this->body($response['body'] ?? []);
                 $headers = $this->headers($response['headers'] ?? []);
                 $replace = [
-                    $el['context'] ?? '',
+                    $this->description('Context', $response['context'] ?? ''),
                     $this->description('Headers', $headers),
                     '',
                 ];
                 if ($body !== '') {
                     $replace[2] .= $this->description(
                         'Body',
-                        $this->code($response['body']['type'])
+                        $this->code($response['body']['type'] ?? '')
                         . $this->div($response['body']['description'] ?? '')
                     )
                     . $this->descriptionList($body);

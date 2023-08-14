@@ -86,10 +86,14 @@
         font-weight: normal;
         text-align: left;
     }
-    .row.m-0.p-0 .row.m-0.p-0 .col-sm-10 {
+    .row.m-0.p-0 > .row.m-0.p-0 > .col-sm-10 {
         margin-bottom: 0;
         font-size: .875em;
         font-family: var(--bs-font-monospace);
+    }
+    .row.m-0.p-0 .row.m-0.p-0 .col-sm-10 code
+    {
+        font-size: inherit;
     }
 </style>
 <style media="print">
