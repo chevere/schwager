@@ -176,7 +176,7 @@ final class Html implements Stringable
             }
             $return .= $this->description(
                 $name,
-                $this->code($string['type'], 'd-inline-block mb-2 me-2')
+                $this->code($string['type'], 'd-inline-block me-1')
                     . $this->optional($string['required'])
                     . $this->descriptionList($properties)
             );
@@ -232,10 +232,9 @@ final class Html implements Stringable
                 $return .= $this->descriptionList(
                     $this->description(
                         $property,
-                        $this->code($value['type'], 'd-inline-block mb-2 me-2')
+                        $this->code($value['type'], 'd-inline-block me-1')
                         . $this->optional($required)
-                        . $described
-                    )
+                    ) . $described
                 );
             }
 
