@@ -176,7 +176,7 @@ final class Html implements Stringable
             }
             $return .= $this->description(
                 $name,
-                $this->code($string['type'])
+                $this->code($string['type'], 'd-inline-block mb-2')
                     . ($string['required'] ? '' : $this->optionalHtml)
                     . $this->descriptionList($properties)
             );
@@ -197,9 +197,8 @@ final class Html implements Stringable
         return str_repeat('&nbsp;', $count) . $string;
     }
 
-    public function body(array $body, int $indent = -1): string
+    public function body(array $body): string
     {
-        $indent++;
         $type = $body['type'] ?? '';
         if (is_array($type)) {
             $type = '';
@@ -208,15 +207,15 @@ final class Html implements Stringable
         if ($type === '') {
             foreach ($body as $property => $value) {
                 $required = $value['required'] ?? true;
-                $described = $this->body($value, $indent);
+                $described = $this->body($value);
                 $return .= $this->descriptionList(
                     $this->description(
-                        $this->indent($indent - 1, $property),
-                        $this->code($value['type'])
+                        $property,
+                        $this->code($value['type'], 'd-inline-block mb-2')
                         . ($required ? '' : $this->optionalHtml)
+                        . $described
                     )
                 );
-                $return .= $described;
             }
 
             return $return;
@@ -225,9 +224,9 @@ final class Html implements Stringable
         if ($type === 'union') {
             foreach ($parameters as $pos => $param) {
                 $return .= $this->description(
-                    $this->indent($indent, (string) $pos),
+                    (string) $pos,
                     $this->code($param['type'])
-                    . $this->body($param, $indent)
+                    . $this->body($param)
                 );
             }
 
@@ -237,9 +236,9 @@ final class Html implements Stringable
             foreach ($parameters as $name => $parameter) {
                 $return .= $this->descriptionList(
                     $this->description(
-                        $this->indent($indent, $name),
+                        $name,
                         $this->code($parameter['type'])
-                        . $this->body($parameter, $indent)
+                        . $this->body($parameter)
                     )
                 );
             }
@@ -248,7 +247,7 @@ final class Html implements Stringable
         }
 
         if (str_starts_with($type, 'array')) {
-            return $this->body($parameters, $indent);
+            return $this->body($parameters);
         }
 
         return $return;
@@ -280,11 +279,8 @@ final class Html implements Stringable
             $replace[2] = $this->description(
                 'Body',
                 $this->code($endpoint['body']['type'] ?? '')
-                    . $this->div(
-                        $endpoint['body']['description'] ?? ''
-                    )
             )
-            . $this->descriptionList($body);
+            . $body;
         }
 
         return str_replace($search, $replace, $this->requestHtml);
@@ -294,7 +290,7 @@ final class Html implements Stringable
     {
         $array = [];
         foreach ($headers as $name => $value) {
-            $array[] = $name . ' ' . $value;
+            $array[] = $name . ': ' . $value;
         }
 
         return implode('<br>', $array ?? []);
@@ -325,7 +321,7 @@ final class Html implements Stringable
                         $this->code($response['body']['type'] ?? '')
                         . $this->div($response['body']['description'] ?? '')
                     )
-                    . $this->descriptionList($body);
+                    . $body;
                 }
                 $descriptions .= str_replace(
                     $search,

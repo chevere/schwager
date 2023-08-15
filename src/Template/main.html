@@ -6,42 +6,34 @@
 <link href="../src/bootstrap/bootstrap.min.css" rel="stylesheet">
 <title>%name%</title>
 <style media="all">
-    /* :root {
-        --CONNECT: ,
-        --OPTIONS: ,
-        --TRACE: ,
-    } */
-
     :root
     {
-        --bg-GET: #f5fbff;
-        --text-GET: #025fd7;
-        --border-GET: #025fd94d;
-        --bg-DELETE: #fdf2f1;
-        --text-DELETE: #bf0e08;
-        --border-DELETE: #bf0e084d;
-        --bg-POST: #f4faf8;
-        --text-POST: #008a64;
-        --border-POST: #008a634d;
-        --bg-PATCH: #fef4e8;
-        --text-PATCH: #df9136;
-        --border-PATCH: #df8f344d;
-        --bg-OPTIONS: #f4f0f6;
-        --text-OPTIONS: #800080;
-        --border-OPTIONS: #80007f4d;
-    }
-    :root[data-bs-theme="dark"] {
-        --bg-GET: #111c28;
-        --bg-DELETE: #241314;
-        --bg-POST: #11201d;
-        --bg-PATCH: #272018;
-        --bg-OPTIONS: var(--darkest-purple);
+        --bg-GET: var(--bs-primary-bg-subtle);
+        --text-GET: var(--bs-primary-text-emphasis);
+        --border-GET: var(--bs-primary-border-subtle);
+
+        --bg-DELETE: var(--bs-danger-bg-subtle);
+        --text-DELETE: var(--bs-danger-text-emphasis);
+        --border-DELETE: var(--bs-danger-border-subtle);
+
+        --bg-POST: var(--bs-success-bg-subtle);
+        --text-POST: var(--bs-success-text-emphasis);
+        --border-POST: var(--bs-success-border-subtle);
+
+        --bg-PATCH: var(--bs-warning-bg-subtle);
+        --text-PATCH: var(--bs-warning-text-emphasis);
+        --border-PATCH: var(--bs-warning-border-subtle);
+
+        --bg-OPTIONS: var(--bs-info-bg-subtle);
+        --text-OPTIONS: var(--bs-info-text-emphasis);
+        --border-OPTIONS: var(--bs-info-border-subtle);
     }
 
     .http-method {
         border-style: solid;
         border-width: 1px;
         font-weight: 600;
+        font-size: 1rem;
         white-space: nowrap;
     }
     .http-method.method-DELETE {
@@ -82,21 +74,16 @@
         text-overflow: ellipsis;
         overflow: auto;
     }
+    .row.m-0.p-0 {
+        font-size: 1em;
+    }
     .row.m-0.p-0 .col-sm-2 {
         font-weight: normal;
         text-align: left;
         overflow: auto;
         text-overflow: ellipsis;
     }
-    .row.m-0.p-0 > .row.m-0.p-0 > .col-sm-10 {
-        margin-bottom: 0;
-        font-size: .875em;
-        font-family: var(--bs-font-monospace);
-    }
-    .row.m-0.p-0 .row.m-0.p-0 .col-sm-10 code
-    {
-        font-size: inherit;
-    }
+
 </style>
 <style media="print">
     .sticky-top {
