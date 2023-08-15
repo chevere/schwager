@@ -51,7 +51,7 @@ final class Html implements Stringable
 
     private string $endpointsHtml;
 
-    private string $optionalHtml;
+    private string $badgeHtml;
 
     private string $serverHtml;
 
@@ -129,10 +129,12 @@ final class Html implements Stringable
 
         return str_replace(
             [
+                '%title%',
                 '%dt%',
                 '%dd%',
             ],
             [
+                strip_tags($title),
                 $title,
                 $description,
             ],
@@ -176,13 +178,22 @@ final class Html implements Stringable
             }
             $return .= $this->description(
                 $name,
-                $this->code($string['type'], 'd-inline-block mb-2')
-                    . ($string['required'] ? '' : $this->optionalHtml)
+                $this->code($string['type'], 'd-inline-block mb-2 me-2')
+                    . $this->optional($string['required'])
                     . $this->descriptionList($properties)
             );
         }
 
         return $return;
+    }
+
+    public function optional(bool $isRequired): string
+    {
+        if (! $isRequired) {
+            return $this->badge('optional', 'badge-key');
+        }
+
+        return '';
     }
 
     public function type(array $schema): string
@@ -192,9 +203,21 @@ final class Html implements Stringable
         HTML;
     }
 
-    public function indent(int $count, string $string): string
+    public function badge(string $name, string $class = ''): string
     {
-        return str_repeat('&nbsp;', $count) . $string;
+        return str_replace(
+            [
+                '%name%',
+                '%class%',
+            ],
+            [
+                $name,
+                $class !== ''
+                    ? " {$class}"
+                    : '',
+            ],
+            $this->badgeHtml
+        );
     }
 
     public function body(array $body): string
@@ -211,8 +234,8 @@ final class Html implements Stringable
                 $return .= $this->descriptionList(
                     $this->description(
                         $property,
-                        $this->code($value['type'], 'd-inline-block mb-2')
-                        . ($required ? '' : $this->optionalHtml)
+                        $this->code($value['type'], 'd-inline-block mb-2 me-2')
+                        . $this->optional($required)
                         . $described
                     )
                 );
@@ -224,7 +247,7 @@ final class Html implements Stringable
         if ($type === 'union') {
             foreach ($parameters as $pos => $param) {
                 $return .= $this->description(
-                    (string) $pos,
+                    $this->badge((string) $pos, 'badge-key'),
                     $this->code($param['type'])
                     . $this->body($param)
                 );
@@ -236,7 +259,7 @@ final class Html implements Stringable
             foreach ($parameters as $name => $parameter) {
                 $return .= $this->descriptionList(
                     $this->description(
-                        $name,
+                        $this->badge($name, 'badge-key'),
                         $this->code($parameter['type'])
                         . $this->body($parameter)
                     )
@@ -404,7 +427,7 @@ final class Html implements Stringable
         $this->endpointHtml = $this->getTemplate('endpoint.html');
         $this->endpointsHtml = $this->getTemplate('endpoints.html');
         $this->statusCodeHtml = $this->getTemplate('status-code.html');
-        $this->optionalHtml = $this->getTemplate('optional.html');
+        $this->badgeHtml = $this->getTemplate('badge.html');
         $this->serverHtml = $this->getTemplate('server.html');
         $this->serversHtml = $this->getTemplate('servers.html');
         $this->descriptionList = $this->getTemplate('description-list.html');
