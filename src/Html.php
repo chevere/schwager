@@ -45,8 +45,6 @@ final class Html implements Stringable
 
     private string $responseListHtml;
 
-    private string $responsesHtml;
-
     private string $endpointHtml;
 
     private string $endpointsHtml;
@@ -134,7 +132,7 @@ final class Html implements Stringable
                 '%dd%',
             ],
             [
-                strip_tags($title),
+                trim(strip_tags($title)),
                 $title,
                 $description,
             ],
