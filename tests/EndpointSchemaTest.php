@@ -22,7 +22,7 @@ use Chevere\Schwager\MiddlewareSchema;
 use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Http\getStatus;
+use function Chevere\Http\getResponse;
 use function Chevere\Router\bind;
 
 final class EndpointSchemaTest extends TestCase
@@ -31,9 +31,11 @@ final class EndpointSchemaTest extends TestCase
     {
         $method = new GetMethod();
         $controllerName = GetController::class;
-        $controllerStatus = getStatus($controllerName);
+        $response = getResponse($controllerName);
+        $controllerStatus = $response->status;
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
-        $middlewareStatus = getStatus(MiddlewareOne::class);
+        $response = getResponse(MiddlewareOne::class);
+        $middlewareStatus = $response->status;
         $middlewares = new Middlewares($middlewareName);
         $bind = bind($controllerName, $middlewares);
         $endpoint = new Endpoint($method, $bind);

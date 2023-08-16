@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use Chevere\Http\Attributes\Status;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
-use ReflectionClass;
-use function Chevere\Attribute\hasAttribute;
-use function Chevere\Http\getHeaders;
-use function Chevere\Http\getStatus;
+use function Chevere\Http\getRequest;
+use function Chevere\Http\getResponse;
 use function Chevere\Parameter\string;
 
 final class EndpointSchema implements ToArrayInterface
@@ -41,28 +38,21 @@ final class EndpointSchema implements ToArrayInterface
         $this->responses = [];
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
-            $hasStatus = hasAttribute(
-                // @phpstan-ignore-next-line
-                new ReflectionClass($class),
-                Status::class
-            );
-            if (! $hasStatus) {
-                continue;
-            }
-            $status = getStatus($class);
+            // $request = getRequest($class);
+            $response = getResponse($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->responses[$status->primary][] = $schema->toArray();
+            $this->responses[$response->status->primary][] = $schema->toArray();
         }
         $controller = $this->endpoint->bind()->controllerName()->__toString();
-        $headers = getHeaders($controller);
-        $status = getStatus($controller);
-        $statuses = $status->toArray();
+        // $request = getRequest($controller);
+        $response = getResponse($controller);
+        $statuses = $response->status->toArray();
         $statuses = array_fill_keys($statuses, [
             'context' => $this->getShortName($controller),
-            'headers' => $headers->toArray(),
+            'headers' => $response->headers->toExport(),
         ]);
         foreach ($statuses as $code => $array) {
-            if ($code === $status->primary) {
+            if ($code === $response->status->primary) {
                 $array['body'] = $controller::acceptResponse()->schema();
             }
             $this->responses[$code][] = $array;

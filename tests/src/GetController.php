@@ -15,9 +15,10 @@ namespace Chevere\Tests\src;
 
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
-use Chevere\Http\Attributes\Header;
-use Chevere\Http\Attributes\Status;
+use Chevere\Http\Attributes\Response;
 use Chevere\Http\Controller;
+use Chevere\Http\Header;
+use Chevere\Http\Status;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\arrayp;
@@ -28,9 +29,11 @@ use function Chevere\Parameter\integer;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
-#[Status(222, 403)]
-#[Header('foo', 'bar')]
-#[Header('esta', 'wea')]
+#[Response(
+    new Status(222, 403),
+    new Header('foo', 'bar'),
+    new Header('esta', 'wea')
+)]
 class GetController extends Controller
 {
     public static function acceptQuery(): ArrayStringParameterInterface
