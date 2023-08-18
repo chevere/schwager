@@ -16,8 +16,8 @@ namespace Chevere\Schwager;
 use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
-use function Chevere\Http\getRequest;
-use function Chevere\Http\getResponse;
+use function Chevere\Http\requestAttribute;
+use function Chevere\Http\responseAttribute;
 use function Chevere\Parameter\string;
 
 final class EndpointSchema implements ToArrayInterface
@@ -30,40 +30,54 @@ final class EndpointSchema implements ToArrayInterface
     /**
      * @var array<int, array<int|string, mixed>>
      */
-    private array $responses;
+    private array $responses = [];
+
+    /**
+     * @var array<string, mixed>
+     */
+    private array $request = [];
 
     public function __construct(
         private EndpointInterface $endpoint,
     ) {
-        $this->responses = [];
+        $requestHeaders = [];
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
-            // $request = getRequest($class);
-            $response = getResponse($class);
+            $request = requestAttribute($class);
+            $response = responseAttribute($class);
             $schema = new MiddlewareSchema($middleware);
-            $this->responses[$response->status->primary][] = $schema->toArray();
+            $array = $schema->toArray();
+            $requestHeaders[] = [];
+            foreach ($array['responses'] as $code => $responses) {
+                $this->responses[$code] = $responses;
+            }
         }
         $controller = $this->endpoint->bind()->controllerName()->__toString();
-        // $request = getRequest($controller);
-        $response = getResponse($controller);
+        $request = requestAttribute($controller);
+        $response = responseAttribute($controller);
         $statuses = $response->status->toArray();
         $statuses = array_fill_keys($statuses, [
-            'context' => $this->getShortName($controller),
-            'headers' => $response->headers->toExport(),
+            'context' => shortName($controller),
         ]);
         foreach ($statuses as $code => $array) {
             if ($code === $response->status->primary) {
+                $array['headers'] = $response->headers->toArray();
                 $array['body'] = $controller::acceptResponse()->schema();
             }
             $this->responses[$code][] = $array;
         }
         ksort($this->responses);
+        array_push($requestHeaders, $request->headers->toArray());
+        $requestHeaders = array_filter($requestHeaders);
         $this->array = [
             'description' => $this->endpoint->description(),
-            'query' => $this->getQuerySchema(
-                $controller::acceptQuery()->parameters()
-            ),
-            'body' => $controller::acceptBody()->schema(),
+            'request' => [
+                'headers' => $requestHeaders,
+                'query' => $this->getQuerySchema(
+                    $controller::acceptQuery()->parameters()
+                ),
+                'body' => $controller::acceptBody()->schema(),
+            ],
             'responses' => $this->responses,
         ];
     }
@@ -91,12 +105,5 @@ final class EndpointSchema implements ToArrayInterface
         }
 
         return $array;
-    }
-
-    private function getShortName(string $name): string
-    {
-        $explode = explode('\\', $name);
-
-        return array_pop($explode);
     }
 }

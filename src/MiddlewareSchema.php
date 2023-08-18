@@ -15,7 +15,8 @@ namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
-use function Chevere\Http\getResponse;
+use function Chevere\Http\requestAttribute;
+use function Chevere\Http\responseAttribute;
 
 final class MiddlewareSchema implements ToArrayInterface
 {
@@ -27,10 +28,26 @@ final class MiddlewareSchema implements ToArrayInterface
     public function __construct(MiddlewareNameInterface $middleware)
     {
         $name = $middleware->__toString();
-        $context = $this->getShortName($name);
-        $this->array = [
+        $context = shortName($name);
+        $request = requestAttribute($name);
+        $response = responseAttribute($name);
+        $responses = [];
+        $statuses = $response->status->toArray();
+        $statuses = array_fill_keys($statuses, [
             'context' => $context,
-            'headers' => getResponse($name)->headers->toArray(),
+        ]);
+        foreach ($statuses as $code => $array) {
+            if ($code === $response->status->primary) {
+                $array['headers'] = $response->headers->toArray();
+            }
+            $responses[$code][] = $array;
+        }
+        ksort($responses);
+        $this->array = [
+            'request' => [
+                'headers' => $request->headers->toArray(),
+            ],
+            'responses' => $responses,
         ];
     }
 
@@ -40,12 +57,5 @@ final class MiddlewareSchema implements ToArrayInterface
     public function toArray(): array
     {
         return $this->array;
-    }
-
-    private function getShortName(string $name): string
-    {
-        $explode = explode('\\', $name);
-
-        return array_pop($explode);
     }
 }

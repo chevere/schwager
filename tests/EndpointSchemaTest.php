@@ -22,7 +22,7 @@ use Chevere\Schwager\MiddlewareSchema;
 use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Http\getResponse;
+use function Chevere\Http\responseAttribute;
 use function Chevere\Router\bind;
 
 final class EndpointSchemaTest extends TestCase
@@ -31,10 +31,10 @@ final class EndpointSchemaTest extends TestCase
     {
         $method = new GetMethod();
         $controllerName = GetController::class;
-        $response = getResponse($controllerName);
+        $response = responseAttribute($controllerName);
         $controllerStatus = $response->status;
         $middlewareName = new MiddlewareName(MiddlewareOne::class);
-        $response = getResponse(MiddlewareOne::class);
+        $response = responseAttribute(MiddlewareOne::class);
         $middlewareStatus = $response->status;
         $middlewares = new Middlewares($middlewareName);
         $bind = bind($controllerName, $middlewares);
@@ -46,8 +46,8 @@ final class EndpointSchemaTest extends TestCase
         $middlewareSchema = new MiddlewareSchema($middlewareName);
         $responses[$middlewareStatus->primary][] = $middlewareSchema->toArray();
         $headers = [
-            'foo' => 'bar',
-            'esta' => 'wea',
+            'foo: bar',
+            'esta: wea',
         ];
         $responses[$controllerStatus->primary][] = [
             'context' => 'GetController',
@@ -56,20 +56,22 @@ final class EndpointSchemaTest extends TestCase
         ];
         $responses[403][] = [
             'context' => 'GetController',
-            'headers' => $headers,
         ];
         ksort($responses);
         $this->assertSame([
             'description' => $endpoint->description(),
-            'query' => [
-                'date' => [
-                    'required' => true,
-                ] + $date,
-                'time' => [
-                    'required' => false,
-                ] + $time,
+            'request' => [
+                'headers' => [],
+                'query' => [
+                    'date' => [
+                        'required' => true,
+                    ] + $date,
+                    'time' => [
+                        'required' => false,
+                    ] + $time,
+                ],
+                'body' => $controllerName::acceptBody()->schema(),
             ],
-            'body' => $controllerName::acceptBody()->schema(),
             'responses' => $responses,
         ], $schema->toArray());
     }
