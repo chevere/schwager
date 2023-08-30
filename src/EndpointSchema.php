@@ -32,11 +32,6 @@ final class EndpointSchema implements ToArrayInterface
      */
     private array $responses = [];
 
-    /**
-     * @var array<string, mixed>
-     */
-    private array $request = [];
-
     public function __construct(
         private EndpointInterface $endpoint,
     ) {
@@ -44,11 +39,9 @@ final class EndpointSchema implements ToArrayInterface
         foreach ($endpoint->bind()->middlewares() as $middleware) {
             $class = $middleware->__toString();
             $request = requestAttribute($class);
-            $response = responseAttribute($class);
             $schema = new MiddlewareSchema($middleware);
-            $array = $schema->toArray();
-            $requestHeaders[] = [];
-            foreach ($array['responses'] as $code => $responses) {
+            $requestHeaders[] = $schema->request()['headers'];
+            foreach ($schema->responses() as $code => $responses) {
                 $this->responses[$code] = $responses;
             }
         }
@@ -67,8 +60,8 @@ final class EndpointSchema implements ToArrayInterface
             $this->responses[$code][] = $array;
         }
         ksort($this->responses);
-        array_push($requestHeaders, $request->headers->toArray());
         $requestHeaders = array_filter($requestHeaders);
+        array_push($requestHeaders, ...$request->headers->toArray());
         $this->array = [
             'description' => $this->endpoint->description(),
             'request' => [

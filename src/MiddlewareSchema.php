@@ -25,13 +25,23 @@ final class MiddlewareSchema implements ToArrayInterface
      */
     private array $array = [];
 
+    /**
+     * @var array<string, array<string>>
+     */
+    private array $request = [];
+
+    /**
+     * @var array<int, array<int|string, mixed>>
+     */
+    private array $responses = [];
+
     public function __construct(MiddlewareNameInterface $middleware)
     {
         $name = $middleware->__toString();
         $context = shortName($name);
         $request = requestAttribute($name);
         $response = responseAttribute($name);
-        $responses = [];
+        $this->responses = [];
         $statuses = $response->status->toArray();
         $statuses = array_fill_keys($statuses, [
             'context' => $context,
@@ -40,14 +50,15 @@ final class MiddlewareSchema implements ToArrayInterface
             if ($code === $response->status->primary) {
                 $array['headers'] = $response->headers->toArray();
             }
-            $responses[$code][] = $array;
+            $this->responses[$code][] = $array;
         }
-        ksort($responses);
+        ksort($this->responses);
+        $this->request = [
+            'headers' => $request->headers->toArray(),
+        ];
         $this->array = [
-            'request' => [
-                'headers' => $request->headers->toArray(),
-            ],
-            'responses' => $responses,
+            'request' => $this->request,
+            'responses' => $this->responses,
         ];
     }
 
@@ -57,5 +68,21 @@ final class MiddlewareSchema implements ToArrayInterface
     public function toArray(): array
     {
         return $this->array;
+    }
+
+    /**
+     * @return array<string, array<string>>
+     */
+    public function request(): array
+    {
+        return $this->request;
+    }
+
+    /**
+     * @return array<int, array<int|string, mixed>>
+     */
+    public function responses(): array
+    {
+        return $this->responses;
     }
 }

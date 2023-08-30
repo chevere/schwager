@@ -18,7 +18,6 @@ use Chevere\Http\MiddlewareName;
 use Chevere\Http\Middlewares;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
-use Chevere\Schwager\MiddlewareSchema;
 use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
@@ -43,15 +42,16 @@ final class EndpointSchemaTest extends TestCase
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
         $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
         $responses = [];
-        $middlewareSchema = new MiddlewareSchema($middlewareName);
-        $responses[$middlewareStatus->primary][] = $middlewareSchema->toArray();
-        $headers = [
-            'foo: bar',
-            'esta: wea',
+        $responses[$middlewareStatus->primary][] = [
+            'context' => 'MiddlewareOne',
+            'headers' => [],
         ];
         $responses[$controllerStatus->primary][] = [
             'context' => 'GetController',
-            'headers' => $headers,
+            'headers' => [
+                'foo: bar',
+                'esta: wea',
+            ],
             'body' => $controllerName::acceptResponse()->schema(),
         ];
         $responses[403][] = [
