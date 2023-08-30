@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Schwager;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
+use Chevere\Http\Attributes\Request;
+use Chevere\Http\Attributes\Response;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
+use ReflectionClass;
+use function Chevere\Attribute\hasAttribute;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
 
@@ -39,22 +43,31 @@ final class MiddlewareSchema implements ToArrayInterface
     {
         $name = $middleware->__toString();
         $context = shortName($name);
-        $request = requestAttribute($name);
-        $response = responseAttribute($name);
-        $this->responses = [];
-        $statuses = $response->status->toArray();
-        $statuses = array_fill_keys($statuses, [
-            'context' => $context,
-        ]);
-        foreach ($statuses as $code => $array) {
-            if ($code === $response->status->primary) {
-                $array['headers'] = $response->headers->toArray();
-            }
-            $this->responses[$code][] = $array;
+        // @phpstan-ignore-next-line
+        $reflection = new ReflectionClass($name);
+        $requestHeaders = [];
+        if (hasAttribute($reflection, Request::class)) {
+            $request = requestAttribute($name);
+            $requestHeaders = $request->headers->toArray();
         }
-        ksort($this->responses);
+        $this->responses = [];
+        if (hasAttribute($reflection, Response::class)) {
+            $response = responseAttribute($name);
+            $statuses = $response->status->toArray();
+            $statuses = array_fill_keys($statuses, [
+                'context' => $context,
+            ]);
+            foreach ($statuses as $code => $array) {
+                if ($code === $response->status->primary) {
+                    $array['headers'] = $response->headers->toArray();
+                }
+                $this->responses[$code][] = $array;
+            }
+            ksort($this->responses);
+        }
+
         $this->request = [
-            'headers' => $request->headers->toArray(),
+            'headers' => $requestHeaders,
         ];
         $this->array = [
             'request' => $this->request,
