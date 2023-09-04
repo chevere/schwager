@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests;
 
 use Chevere\Http\Methods\GetMethod;
-use Chevere\Http\MiddlewareName;
-use Chevere\Http\Middlewares;
 use Chevere\Router\Endpoint;
 use Chevere\Schwager\EndpointSchema;
 use Chevere\Tests\src\GetController;
@@ -32,11 +30,9 @@ final class EndpointSchemaTest extends TestCase
         $controllerName = GetController::class;
         $response = responseAttribute($controllerName);
         $controllerStatus = $response->status;
-        $middlewareName = new MiddlewareName(MiddlewareOne::class);
         $response = responseAttribute(MiddlewareOne::class);
         $middlewareStatus = $response->status;
-        $middlewares = new Middlewares($middlewareName);
-        $bind = bind($controllerName, $middlewares);
+        $bind = bind($controllerName, MiddlewareOne::class);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();

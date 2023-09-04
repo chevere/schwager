@@ -49,6 +49,8 @@ final class SpecTest extends TestCase
         $testServer = new ServerSchema('testServerUrl', 'test');
         $productionServer = new ServerSchema('productionServerUrl', 'test');
         $spec = new Spec($router, $document, $testServer, $productionServer);
+        $this->assertSame($document, $spec->document());
+        $this->assertSame([$testServer, $productionServer], $spec->servers());
         $array = $spec->toArray();
         $this->assertSame([
             $testServer->toArray(),
