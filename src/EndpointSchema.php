@@ -37,7 +37,6 @@ final class EndpointSchema implements ToArrayInterface
     ) {
         $requestHeaders = [];
         foreach ($endpoint->bind()->middlewares() as $middleware) {
-            $class = $middleware->__toString();
             $schema = new MiddlewareSchema($middleware);
             $requestHeaders[] = $schema->request()['headers'];
             foreach ($schema->responses() as $code => $responses) {
