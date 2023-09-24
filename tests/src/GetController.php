@@ -19,8 +19,8 @@ use Chevere\Http\Attributes\Response;
 use Chevere\Http\Controller;
 use Chevere\Http\Header;
 use Chevere\Http\Status;
+use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\date;
@@ -45,7 +45,7 @@ class GetController extends Controller
         );
     }
 
-    public static function acceptBody(): ArrayTypeParameterInterface
+    public static function acceptBody(): ArrayParameterInterface
     {
         return arrayp()->withOptional(
             arreglo: arrayp(
@@ -57,7 +57,7 @@ class GetController extends Controller
         );
     }
 
-    public static function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayParameterInterface
     {
         return arrayp(test: string('/^test$/'));
     }
