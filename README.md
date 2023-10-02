@@ -17,7 +17,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=chevere_schwager&metric=coverage)](https://sonarcloud.io/dashboard?id=chevere_schwager)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=chevere_schwager&metric=sqale_index)](https://sonarcloud.io/dashboard?id=chevere_schwager)
 [![CodeFactor](https://www.codefactor.io/repository/github/chevere/schwager/badge)](https://www.codefactor.io/repository/github/chevere/schwager)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/df08d136440c4b448076b85ed48bb4b6)](https://www.codacy.com/gh/chevere/schwager/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/df08d136440c4b448076b85ed48bb4b6)](https://app.codacy.com/gh/chevere/schwager/dashboard)
 
 ![Schwager](.github/banner/schwager-logo.svg)
 
