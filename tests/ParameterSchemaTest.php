@@ -15,13 +15,13 @@ namespace Chevere\Tests;
 
 use Chevere\Schwager\ParameterSchema;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 
 final class ParameterSchemaTest extends TestCase
 {
     public function testSchema(): void
     {
-        $parameter = integer(minimum: 0, maximum: 100);
+        $parameter = int(minimum: 0, maximum: 100);
         $isRequired = true;
         $schema = new ParameterSchema($parameter, $isRequired);
         $this->assertSame([

@@ -10,5 +10,6 @@
 /sonar-project.properties export-ignore
 /src/bootstrap linguist-vendored
 /src/cssscript linguist-vendored
+/infection.json.dist export-ignore
 
 *.php diff=php

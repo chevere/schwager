@@ -25,7 +25,7 @@ use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\float;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
@@ -50,10 +50,10 @@ class GetController extends Controller
         return arrayp()->withOptional(
             arreglo: arrayp(
                 string: string(),
-                integer: integer(),
+                int: int(),
             ),
             rate: float(minimum: 16.5),
-            hours: integer(minimum: 1, maximum: 8),
+            hours: int(minimum: 1, maximum: 8),
         );
     }
 
