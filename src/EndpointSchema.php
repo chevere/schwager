@@ -90,7 +90,7 @@ final class EndpointSchema implements ToArrayInterface
         foreach ($parameters as $id => $parameter) {
             $schema = new ParameterSchema(
                 $parameter,
-                $parameters->isRequired($id),
+                $parameters->requiredKeys()->contains($id),
             );
             $array[$id] = $schema->toArray();
         }
