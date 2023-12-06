@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Http\Attributes\Request;
 use Chevere\Http\Attributes\Response;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 use ReflectionClass;
-use function Chevere\Attribute\hasAttribute;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
 
-final class MiddlewareSchema implements ToArrayInterface
+final class MiddlewareSchema implements SchemaInterface
 {
     /**
      * @var array<string, mixed>
@@ -46,12 +45,12 @@ final class MiddlewareSchema implements ToArrayInterface
         // @phpstan-ignore-next-line
         $reflection = new ReflectionClass($name);
         $requestHeaders = [];
-        if (hasAttribute($reflection, Request::class)) {
+        if ($this->hasAttribute($reflection, Request::class)) {
             $request = requestAttribute($name);
             $requestHeaders = $request->headers->toArray();
         }
         $this->responses = [];
-        if (hasAttribute($reflection, Response::class)) {
+        if ($this->hasAttribute($reflection, Response::class)) {
             $response = responseAttribute($name);
             $statuses = $response->status->toArray();
             $statuses = array_fill_keys($statuses, [
@@ -97,5 +96,15 @@ final class MiddlewareSchema implements ToArrayInterface
     public function responses(): array
     {
         return $this->responses;
+    }
+
+    /**
+     * @phpstan-ignore-next-line
+     */
+    private function hasAttribute(ReflectionClass $reflection, string $attribute): bool
+    {
+        $attributes = $reflection->getAttributes($attribute);
+
+        return $attributes !== [];
     }
 }

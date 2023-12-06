@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 
-final class ParameterSchema implements ToArrayInterface
+final class ParameterSchema implements SchemaInterface
 {
     public function __construct(
         private ParameterInterface $parameter,

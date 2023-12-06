@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
 use function Chevere\Parameter\string;
 
-final class EndpointSchema implements ToArrayInterface
+final class EndpointSchema implements SchemaInterface
 {
     /**
      * @var array<string, mixed>

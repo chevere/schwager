@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\src;
 
-use Chevere\Attributes\Description;
-use Chevere\Attributes\Regex;
 use Chevere\Http\Attributes\Response;
 use Chevere\Http\Controller;
 use Chevere\Http\Header;
 use Chevere\Http\Status;
+use Chevere\Parameter\Attributes\StringAttr;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use function Chevere\Parameter\arrayp;
@@ -52,8 +51,8 @@ class GetController extends Controller
                 string: string(),
                 int: int(),
             ),
-            rate: float(minimum: 16.5),
-            hours: int(minimum: 1, maximum: 8),
+            rate: float(min: 16.5),
+            hours: int(min: 1, max: 8),
         );
     }
 
@@ -63,11 +62,9 @@ class GetController extends Controller
     }
 
     public function run(
-        #[Description('The user integer id')]
-        #[Regex('/^[0-9]+$/')]
+        #[StringAttr('/^[0-9]+$/', 'The user integer id')]
         string $id,
-        #[Description('The user name')]
-        #[Regex('/^[\w]+$/')]
+        #[StringAttr('/^[\w]+$/', 'The user name')]
         string $name
     ): array {
         return [

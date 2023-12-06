@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Router\Interfaces\EndpointInterface;
 use Chevere\Router\Interfaces\RouteInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 use function Chevere\Action\getParameters;
 
-final class RouteSchema implements ToArrayInterface
+final class RouteSchema implements SchemaInterface
 {
     private EndpointInterface $firstEndpoint;
 

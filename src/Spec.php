@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Router\Interfaces\RouteInterface;
 use Chevere\Router\Interfaces\RouterInterface;
 
-final class Spec implements ToArrayInterface
+final class Spec
 {
     /**
      * @var array<string, mixed>
@@ -68,7 +67,7 @@ final class Spec implements ToArrayInterface
     /**
      * @return array<int<0, max>, array<string, string>>
      */
-    private function getServers(ToArrayInterface ...$server): array
+    private function getServers(ServerSchema ...$server): array
     {
         $array = [];
         foreach ($server as $schema) {

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 
-final class ServerSchema implements ToArrayInterface
+final class ServerSchema implements SchemaInterface
 {
     public function __construct(
         public readonly string $url,

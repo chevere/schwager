@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\Router\Interfaces\VariableInterface;
+use Chevere\Schwager\Interfaces\SchemaInterface;
 
-final class VariableSchema implements ToArrayInterface
+final class VariableSchema implements SchemaInterface
 {
     public function __construct(
         private VariableInterface $variable,

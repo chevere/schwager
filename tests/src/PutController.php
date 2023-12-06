@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\src;
 
-use Chevere\Attributes\Description;
-use Chevere\Attributes\Regex;
 use Chevere\Http\Controller;
+use Chevere\Parameter\Attributes\StringAttr;
 
 class PutController extends Controller
 {
     public function run(
-        #[Description('The user integer id')]
-        #[Regex('/^[0-9]+$/')]
+        #[StringAttr('/^[0-9]+$/', 'The user integer id')]
         string $id,
-        #[Description('The user name')]
-        #[Regex('/^[\w]+$/')]
+        #[StringAttr('/^[\w]+$/', 'The user name')]
         string $name
     ): array {
         return [];

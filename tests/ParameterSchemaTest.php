@@ -21,7 +21,7 @@ final class ParameterSchemaTest extends TestCase
 {
     public function testSchema(): void
     {
-        $parameter = int(minimum: 0, maximum: 100);
+        $parameter = int(min: 0, max: 100);
         $isRequired = true;
         $schema = new ParameterSchema($parameter, $isRequired);
         $this->assertSame([
