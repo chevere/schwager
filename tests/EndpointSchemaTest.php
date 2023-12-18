@@ -48,7 +48,7 @@ final class EndpointSchemaTest extends TestCase
                 'foo: bar',
                 'esta: wea',
             ],
-            'body' => $controllerName::acceptResponse()->schema(),
+            'body' => $controllerName::return()->schema(),
         ];
         $responses[403][] = [
             'context' => 'GetController',

@@ -56,7 +56,7 @@ class GetController extends Controller
         );
     }
 
-    public static function acceptResponse(): ArrayParameterInterface
+    public static function return(): ArrayParameterInterface
     {
         return arrayp(test: string('/^test$/'));
     }
