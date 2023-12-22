@@ -18,7 +18,7 @@ use Chevere\Parameter\Attributes\StringAttr;
 
 class PutController extends Controller
 {
-    public function run(
+    public function main(
         #[StringAttr('/^[0-9]+$/', 'The user integer id')]
         string $id,
         #[StringAttr('/^[\w]+$/', 'The user name')]

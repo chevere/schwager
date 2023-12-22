@@ -61,7 +61,7 @@ class GetController extends Controller
         return arrayp(test: string('/^test$/'));
     }
 
-    public function run(
+    public function main(
         #[StringAttr('/^[0-9]+$/', 'The user integer id')]
         string $id,
         #[StringAttr('/^[\w]+$/', 'The user name')]
