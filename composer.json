@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "chevere/action": "^1.0.x-dev",
+        "chevere/action": "^1.0.0",
         "chevere/http": "^0.4.x-dev",
         "chevere/parameter": "^1.0.0",
         "chevere/router": "^0.6.x-dev"
