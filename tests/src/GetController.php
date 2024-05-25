@@ -22,6 +22,7 @@ use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
+use function Chevere\Parameter\bool;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\float;
 use function Chevere\Parameter\int;
@@ -49,7 +50,8 @@ class GetController extends Controller
         return arrayp()->withOptional(
             arreglo: arrayp(
                 string: string(),
-                int: int(),
+                integer: int(),
+                bool: bool()
             ),
             rate: float(min: 16.5),
             hours: int(min: 1, max: 8),
