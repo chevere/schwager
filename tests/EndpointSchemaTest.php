@@ -28,21 +28,21 @@ final class EndpointSchemaTest extends TestCase
     {
         $method = new GetMethod();
         $controllerName = GetController::class;
-        $response = responseAttribute($controllerName);
-        $controllerStatus = $response->status;
-        $response = responseAttribute(MiddlewareOne::class);
-        $middlewareStatus = $response->status;
-        $bind = bind($controllerName, MiddlewareOne::class);
+        $controllerResponse = responseAttribute($controllerName);
+        $controllerStatus = $controllerResponse->status;
+        $middlewareResponse = responseAttribute(MiddlewareOne::class);
+        $middlewareStatus = $middlewareResponse->status;
+        $bind = bind($controllerName, middleware: MiddlewareOne::class);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
         $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
         $responses = [];
-        $responses[$middlewareStatus->primary][] = [
+        $responses[$middlewareStatus->success()][] = [
             'context' => 'MiddlewareOne',
             'headers' => [],
         ];
-        $responses[$controllerStatus->primary][] = [
+        $responses[$controllerStatus->success()][] = [
             'context' => 'GetController',
             'headers' => [
                 'foo: bar',

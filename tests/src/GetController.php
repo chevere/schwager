@@ -30,7 +30,7 @@ use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
 #[Response(
-    new Status(222, 403),
+    new Status(222, fail: 403),
     new Header('foo', 'bar'),
     new Header('esta', 'wea')
 )]

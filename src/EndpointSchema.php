@@ -51,8 +51,8 @@ final class EndpointSchema implements SchemaInterface
             'context' => shortName($controller),
         ]);
         foreach ($statuses as $code => $array) {
-            if ($code === $response->status->primary) {
-                $array['headers'] = $response->headers->toArray();
+            if ($code === $response->status->success()) {
+                $array['headers'] = $response->headers->toLines();
                 $array['body'] = $controller::return()->schema();
             }
             $this->responses[$code][] = $array;
