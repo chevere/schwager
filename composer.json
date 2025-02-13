@@ -12,13 +12,14 @@
         }
     ],
     "require": {
-        "chevere/action": "^1.0.2",
-        "chevere/http": "^0.5.0",
-        "chevere/parameter": "^1.0.7",
-        "chevere/router": "^0.7.0"
+        "chevere/caller": "^1.0.x-dev",
+        "chevere/data-structure": "^1.1.x-dev",
+        "chevere/action": "^1.1.x-dev",
+        "chevere/http": "^0.5.x-dev",
+        "chevere/parameter": "^1.1.x-dev",
+        "chevere/router": "^0.7.x-dev"
     },
     "require-dev": {
-        "chevere/var-dump": "^2.0",
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^9.5",
         "symplify/easy-coding-standard": "^11.1"
