@@ -47,17 +47,17 @@ final class MiddlewareSchema implements SchemaInterface
         $requestHeaders = [];
         if ($this->hasAttribute($reflection, Request::class)) {
             $request = requestAttribute($name);
-            $requestHeaders = $request->headers->toArray();
+            $requestHeaders = $request?->headers->toArray() ?? [];
         }
         $this->responses = [];
         if ($this->hasAttribute($reflection, Response::class)) {
             $response = responseAttribute($name);
-            $statuses = $response->status->toArray();
+            $statuses = $response?->status->toArray() ?? [];
             $statuses = array_fill_keys($statuses, [
                 'context' => $context,
             ]);
             foreach ($statuses as $code => $array) {
-                if ($code === $response->status->success()) {
+                if ($response && $code === $response->status->success()) {
                     $array['headers'] = $response->headers->toLines();
                 }
                 $this->responses[$code][] = $array;
