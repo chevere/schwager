@@ -20,7 +20,7 @@ use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\MiddlewareOne;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Http\responseAttribute;
-use function Chevere\Router\bind;
+use function Chevere\Router\headless;
 
 final class EndpointSchemaTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class EndpointSchemaTest extends TestCase
         $controllerStatus = $controllerResponse->status;
         $middlewareResponse = responseAttribute(MiddlewareOne::class);
         $middlewareStatus = $middlewareResponse->status;
-        $bind = bind($controllerName, middleware: MiddlewareOne::class);
+        $bind = headless($controllerName, middleware: MiddlewareOne::class);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();

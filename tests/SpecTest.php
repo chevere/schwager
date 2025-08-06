@@ -20,7 +20,7 @@ use Chevere\Schwager\ServerSchema;
 use Chevere\Schwager\Spec;
 use Chevere\Tests\src\GetController;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Router\bind;
+use function Chevere\Router\headless;
 use function Chevere\Router\route;
 use function Chevere\Router\router;
 use function Chevere\Router\routes;
@@ -34,14 +34,14 @@ final class SpecTest extends TestCase
             ->withEndpoint(
                 new Endpoint(
                     $get,
-                    bind(GetController::class)
+                    headless(GetController::class)
                 )
             );
         $routeAlt = route('/customer/{id}/{name}')
             ->withEndpoint(
                 new Endpoint(
                     $get,
-                    bind(GetController::class)
+                    headless(GetController::class)
                 )
             );
         $router = router(routes($route, $routeAlt));

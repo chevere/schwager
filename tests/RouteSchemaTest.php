@@ -23,7 +23,7 @@ use Chevere\Tests\src\GetController;
 use Chevere\Tests\src\PutController;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Action\getParameters;
-use function Chevere\Router\bind;
+use function Chevere\Router\headless;
 use function Chevere\Router\route;
 
 final class RouteSchemaTest extends TestCase
@@ -33,11 +33,11 @@ final class RouteSchemaTest extends TestCase
         $route = route('/{name}/user/{id}');
         $getEndpoint = new Endpoint(
             new GetMethod(),
-            bind(GetController::class)
+            headless(GetController::class)
         );
         $putEndpoint = new Endpoint(
             new PutMethod(),
-            bind(PutController::class)
+            headless(PutController::class)
         );
         $parameters = getParameters(
             $getEndpoint->bind()->controllerName()->__toString(),

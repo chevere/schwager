@@ -13,11 +13,11 @@
     ],
     "require": {
         "chevere/caller": "^1.0.0",
-        "chevere/data-structure": "^1.1.x-dev",
-        "chevere/action": "^1.1.x-dev",
-        "chevere/http": "^0.5.x-dev",
-        "chevere/parameter": "^1.1.x-dev",
-        "chevere/router": "^0.7.x-dev"
+        "chevere/data-structure": "^1.1.1",
+        "chevere/action": "^1.1.1",
+        "chevere/http": "^0.6.x-dev",
+        "chevere/parameter": "^1.1.2",
+        "chevere/router": "^0.9.x-dev"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.9",
