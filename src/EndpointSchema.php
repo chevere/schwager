@@ -28,7 +28,7 @@ final class EndpointSchema implements SchemaInterface
     private array $array = [];
 
     /**
-     * @var array<int, array<int|string, mixed>>
+     * @var array<int|string, array<int|string, mixed>>
      */
     private array $responses = [];
 

@@ -20,6 +20,7 @@ use Chevere\Schwager\Interfaces\SchemaInterface;
 use ReflectionClass;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
+use function Chevere\Parameter\getType;
 
 final class MiddlewareSchema implements SchemaInterface
 {
@@ -34,7 +35,7 @@ final class MiddlewareSchema implements SchemaInterface
     private array $request = [];
 
     /**
-     * @var array<int, array<int|string, mixed>>
+     * @var array<int|string, array<int|string, mixed>>
      */
     private array $responses = [];
 
@@ -42,6 +43,18 @@ final class MiddlewareSchema implements SchemaInterface
     {
         $name = $middleware->__toString();
         $context = shortName($name);
+        $arguments = [];
+        foreach ($middleware->arguments() as $key => $value) {
+            $value = is_scalar($value)
+                ? (string) $value
+                : getType($value);
+            $arguments[] = <<<PLAIN
+            {$key}:{$value}
+            PLAIN;
+        }
+        if ($arguments !== []) {
+            $context = "{$context} " . implode(', ', $arguments);
+        }
         // @phpstan-ignore-next-line
         $reflection = new ReflectionClass($name);
         $requestHeaders = [];
@@ -91,7 +104,7 @@ final class MiddlewareSchema implements SchemaInterface
     }
 
     /**
-     * @return array<int, array<int|string, mixed>>
+     * @return array<int|string, array<int|string, mixed>>
      */
     public function responses(): array
     {
