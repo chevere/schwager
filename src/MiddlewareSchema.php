@@ -70,7 +70,7 @@ final class MiddlewareSchema implements SchemaInterface
                 'context' => $context,
             ]);
             foreach ($statuses as $code => $array) {
-                if ($response && $code === $response->status->success()) {
+                if ($response && $code === $response->status->success()->mixed()) {
                     $array['headers'] = $response->headers->toLines();
                 }
                 $this->responses[$code][] = $array;

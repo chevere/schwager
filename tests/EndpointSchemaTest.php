@@ -38,11 +38,11 @@ final class EndpointSchemaTest extends TestCase
         $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
         $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
         $responses = [];
-        $responses[$middlewareStatus->success()][] = [
+        $responses[$middlewareStatus->success()->int()][] = [
             'context' => 'MiddlewareOne',
             'headers' => [],
         ];
-        $responses[$controllerStatus->success()][] = [
+        $responses[$controllerStatus->success()->int()][] = [
             'context' => 'GetController',
             'headers' => [
                 'foo: bar',

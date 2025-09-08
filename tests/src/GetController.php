@@ -36,6 +36,17 @@ use function Chevere\Parameter\time;
 )]
 class GetController extends Controller
 {
+    public function __invoke(
+        #[StringAttr('/^[0-9]+$/', 'The user integer id')]
+        string $id,
+        #[StringAttr('/^[\w]+$/', 'The user name')]
+        string $name
+    ): array {
+        return [
+            'test' => 'test',
+        ];
+    }
+
     public static function acceptQuery(): ArrayStringParameterInterface
     {
         return arrayString(
@@ -61,16 +72,5 @@ class GetController extends Controller
     public static function return(): ArrayParameterInterface
     {
         return arrayp(test: string('/^test$/'));
-    }
-
-    public function main(
-        #[StringAttr('/^[0-9]+$/', 'The user integer id')]
-        string $id,
-        #[StringAttr('/^[\w]+$/', 'The user name')]
-        string $name
-    ): array {
-        return [
-            'test' => 'test',
-        ];
     }
 }
