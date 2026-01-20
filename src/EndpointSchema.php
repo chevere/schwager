@@ -53,7 +53,7 @@ final class EndpointSchema implements SchemaInterface
         foreach ($statuses as $code => $array) {
             if ($response && $code === $response->status->success()->mixed()) {
                 $array['headers'] = $response->headers->toLines();
-                $array['body'] = $controller::return()->schema();
+                $array['body'] = $controller::reflection()->return()->schema();
             }
             $this->responses[$code][] = $array;
         }
