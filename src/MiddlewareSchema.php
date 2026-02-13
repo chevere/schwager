@@ -55,7 +55,6 @@ final class MiddlewareSchema implements SchemaInterface
         if ($arguments !== []) {
             $context = "{$context} " . implode(', ', $arguments);
         }
-        // @phpstan-ignore-next-line
         $reflection = new ReflectionClass($name);
         $requestHeaders = [];
         if ($this->hasAttribute($reflection, Request::class)) {
