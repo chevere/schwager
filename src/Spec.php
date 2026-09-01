@@ -79,7 +79,8 @@ final class Spec
 
     private function putPath(string $id, RouteInterface $route): void
     {
-        $group = $this->router->index()->getRouteGroup($id);
+        $group = $this->router->index()
+            ->getRouteGroup($id);
         $schema = new RouteSchema($route, $group);
         // @phpstan-ignore-next-line
         $this->array['paths'][$route->path()->handle()] = $schema->toArray();

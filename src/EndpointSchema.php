@@ -43,7 +43,9 @@ final class EndpointSchema implements SchemaInterface
                 $this->responses[$code] = $responses;
             }
         }
-        $controller = $this->endpoint->bind()->controllerName()->__toString();
+        $controller = $this->endpoint->bind()
+            ->controllerName()
+            ->__toString();
         $request = requestAttribute($controller);
         $response = responseAttribute($controller);
         $statuses = $response?->status->toArray() ?? [];
@@ -92,7 +94,8 @@ final class EndpointSchema implements SchemaInterface
         foreach ($parameters as $id => $parameter) {
             $schema = new ParameterSchema(
                 $parameter,
-                $parameters->requiredKeys()->contains($id),
+                $parameters->requiredKeys()
+                    ->contains($id),
             );
             $array[$id] = $schema->toArray();
         }

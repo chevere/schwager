@@ -34,7 +34,8 @@ final class VariableSchema implements SchemaInterface
         ] + [
             'type' => 'string',
             'description' => $this->description,
-            'regex' => $this->variable->regex()->noDelimiters(),
+            'regex' => $this->variable->regex()
+                ->noDelimiters(),
         ];
     }
 }

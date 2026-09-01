@@ -31,13 +31,16 @@ final class RouteSchema implements SchemaInterface
         private RouteInterface $route,
         private string $group
     ) {
-        $iterator = $route->endpoints()->getIterator();
+        $iterator = $route->endpoints()
+            ->getIterator();
         $iterator->rewind(); // @codeCoverageIgnore
         $this->firstEndpoint = $iterator->current();
         $this->array = [
             'name' => $this->route->name(),
             'group' => $this->group,
-            'regex' => $this->route->path()->regex()->noDelimiters(),
+            'regex' => $this->route->path()
+                ->regex()
+                ->noDelimiters(),
             'variables' => $this->getVariables($this->route),
             'endpoints' => $this->getEndpoints($this->route),
         ];
@@ -74,9 +77,12 @@ final class RouteSchema implements SchemaInterface
         $array = [];
         foreach ($route->path()->variables() as $name => $variable) {
             $parameters = getParameters(
-                $this->firstEndpoint->bind()->controllerName()->__toString(),
+                $this->firstEndpoint->bind()
+                    ->controllerName()
+                    ->__toString(),
             );
-            $description = $parameters->get($name)->description();
+            $description = $parameters->get($name)
+                ->description();
             $schema = new VariableSchema($variable, $description);
             $array[$name] = $schema->toArray();
         }
