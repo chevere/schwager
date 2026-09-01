@@ -27,16 +27,16 @@ final class EndpointSchemaTest extends TestCase
     public function testSchema(): void
     {
         $method = new GetMethod();
-        $controllerName = GetController::class;
-        $controllerResponse = responseAttribute($controllerName);
+        $controllerString = GetController::class;
+        $controllerResponse = responseAttribute($controllerString);
         $controllerStatus = $controllerResponse->status;
         $middlewareResponse = responseAttribute(MiddlewareOne::class);
         $middlewareStatus = $middlewareResponse->status;
-        $bind = headless($controllerName, middleware: MiddlewareOne::class);
+        $bind = headless($controllerString, middleware: MiddlewareOne::class);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);
-        $date = $controllerName::acceptQuery()->parameters()->get('date')->schema();
-        $time = $controllerName::acceptQuery()->parameters()->get('time')->schema();
+        $date = $controllerString::acceptQuery()->parameters()->get('date')->schema();
+        $time = $controllerString::acceptQuery()->parameters()->get('time')->schema();
         $responses = [];
         $responses[$middlewareStatus->success()->int()][] = [
             'context' => 'MiddlewareOne',
@@ -48,7 +48,7 @@ final class EndpointSchemaTest extends TestCase
                 'foo: bar',
                 'esta: wea',
             ],
-            'body' => $controllerName::return()->schema(),
+            'body' => $controllerString::reflection()->return()->schema(),
         ];
         $responses[403][] = [
             'context' => 'GetController',
@@ -66,7 +66,7 @@ final class EndpointSchemaTest extends TestCase
                         'required' => false,
                     ] + $time,
                 ],
-                'body' => $controllerName::acceptBody()->schema(),
+                'body' => $controllerString::acceptBody()->schema(),
             ],
             'responses' => $responses,
         ], $schema->toArray());
