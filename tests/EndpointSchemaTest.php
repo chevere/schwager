@@ -29,9 +29,9 @@ final class EndpointSchemaTest extends TestCase
         $method = new GetMethod();
         $controllerString = GetController::class;
         $controllerResponse = responseAttribute($controllerString);
-        $controllerStatus = $controllerResponse->status;
+        $controllerStatus = $controllerResponse->status();
         $middlewareResponse = responseAttribute(MiddlewareOne::class);
-        $middlewareStatus = $middlewareResponse->status;
+        $middlewareStatus = $middlewareResponse->status();
         $bind = headless($controllerString, middleware: MiddlewareOne::class);
         $endpoint = new Endpoint($method, $bind);
         $schema = new EndpointSchema($endpoint);

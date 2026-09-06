@@ -48,13 +48,15 @@ final class EndpointSchema implements SchemaInterface
             ->__toString();
         $request = requestAttribute($controller);
         $response = responseAttribute($controller);
-        $statuses = $response?->status->toArray() ?? [];
+        $statuses = $response
+            ? [...$response->status()]
+            : [];
         $statuses = array_fill_keys($statuses, [
             'context' => shortName($controller),
         ]);
         foreach ($statuses as $code => $array) {
-            if ($response && $code === $response->status->success()->mixed()) {
-                $array['headers'] = $response->headers->toLines();
+            if ($response && $code === $response->status()->success()->mixed()) {
+                $array['headers'] = $response->headers()->toLines();
                 $array['body'] = $controller::reflection()->return()->schema();
             }
             $this->responses[$code][] = $array;
@@ -62,7 +64,7 @@ final class EndpointSchema implements SchemaInterface
         ksort($this->responses);
         $requestHeaders = array_filter($requestHeaders);
         if ($request) {
-            array_push($requestHeaders, ...$request->headers->toArray());
+            array_push($requestHeaders, ...$request->headers()->toArray());
         }
         $this->array = [
             'description' => $this->endpoint->description(),

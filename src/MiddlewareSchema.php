@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Schwager;
 
-use Chevere\Http\Attributes\Request;
-use Chevere\Http\Attributes\Response;
 use Chevere\Http\Interfaces\MiddlewareNameInterface;
+use Chevere\Http\Interfaces\RequestInterface;
+use Chevere\Http\Interfaces\ResponseInterface;
 use Chevere\Schwager\Interfaces\SchemaInterface;
+use ReflectionAttribute;
 use ReflectionClass;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
@@ -57,20 +58,25 @@ final class MiddlewareSchema implements SchemaInterface
         }
         $reflection = new ReflectionClass($name);
         $requestHeaders = [];
-        if ($this->hasAttribute($reflection, Request::class)) {
+        if ($this->hasAttribute($reflection, RequestInterface::class)) {
             $request = requestAttribute($name);
-            $requestHeaders = $request?->headers->toArray() ?? [];
+            $requestHeaders = $request
+                ? $request->headers()
+                    ->toArray()
+                : [];
         }
         $this->responses = [];
-        if ($this->hasAttribute($reflection, Response::class)) {
+        if ($this->hasAttribute($reflection, ResponseInterface::class)) {
             $response = responseAttribute($name);
-            $statuses = $response?->status->toArray() ?? [];
+            $statuses = $response
+                ? [...$response->status()]
+                : [];
             $statuses = array_fill_keys($statuses, [
                 'context' => $context,
             ]);
             foreach ($statuses as $code => $array) {
-                if ($response && $code === $response->status->success()->mixed()) {
-                    $array['headers'] = $response->headers->toLines();
+                if ($response && $code === $response->status()->success()->mixed()) {
+                    $array['headers'] = $response->headers()->toLines();
                 }
                 $this->responses[$code][] = $array;
             }
@@ -115,7 +121,7 @@ final class MiddlewareSchema implements SchemaInterface
      */
     private function hasAttribute(ReflectionClass $reflection, string $attribute): bool
     {
-        $attributes = $reflection->getAttributes($attribute);
+        $attributes = $reflection->getAttributes($attribute, ReflectionAttribute::IS_INSTANCEOF);
 
         return $attributes !== [];
     }
