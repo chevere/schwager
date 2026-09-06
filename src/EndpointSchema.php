@@ -64,7 +64,7 @@ final class EndpointSchema implements SchemaInterface
         ksort($this->responses);
         $requestHeaders = array_filter($requestHeaders);
         if ($request) {
-            array_push($requestHeaders, ...$request->headers()->toArray());
+            array_push($requestHeaders, ...$request->headers()->toLines());
         }
         $this->array = [
             'description' => $this->endpoint->description(),
