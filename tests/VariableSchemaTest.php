@@ -28,9 +28,9 @@ final class VariableSchemaTest extends TestCase
         $schema = new VariableSchema($variable, $description);
         $this->assertSame([
             'required' => true,
-            'type' => 'string',
             'description' => $description,
-            'regex' => $variable->regex()->noDelimiters(),
+            'regex' => $variable->regex()
+                ->noDelimiters(),
         ], $schema->toArray());
     }
 }
