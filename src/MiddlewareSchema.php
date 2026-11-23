@@ -21,7 +21,7 @@ use ReflectionAttribute;
 use ReflectionClass;
 use function Chevere\Http\requestAttribute;
 use function Chevere\Http\responseAttribute;
-use function Chevere\Parameter\getType;
+use function Chevere\Parameter\getType as getParameterType;
 
 final class MiddlewareSchema implements SchemaInterface
 {
@@ -48,7 +48,7 @@ final class MiddlewareSchema implements SchemaInterface
         foreach ($middleware->arguments() as $key => $value) {
             $value = is_scalar($value)
                 ? (string) $value
-                : getType($value);
+                : getParameterType($value);
             $arguments[] = <<<PLAIN
             {$key}:{$value}
             PLAIN;
